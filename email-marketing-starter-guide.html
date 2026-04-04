@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email marketing starter guide | Webprofits</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --body: #374151;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --border: #e5e7eb;
+    --bg: #ffffff;
+    --card-bg: #f9fafb;
+    --green: #059669;
+    --green-bg: #ecfdf5;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--body);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+  .header .badge {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .header .subtitle {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .header .meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Section headings */
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: 56px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 32px;
+    margin-bottom: 8px;
+  }
+
+  p { margin-bottom: 14px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .callout-green { background: var(--green-bg); border-left: 4px solid var(--green); }
+  .callout-amber { background: var(--amber-bg); border-left: 4px solid var(--amber); }
+  .callout-red { background: var(--red-bg); border-left: 4px solid var(--red); }
+  .callout-blue { background: var(--accent-light); border-left: 4px solid var(--accent); }
+  .callout .callout-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  /* Resource cards */
+  .resource {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .resource .resource-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .resource .resource-name a { color: var(--ink); }
+  .resource .resource-name a:hover { color: var(--accent); }
+  .resource .resource-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .resource .resource-meta span {
+    display: inline-block;
+    margin-right: 16px;
+  }
+  .resource .verdict {
+    font-size: 14px;
+    color: var(--body);
+  }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-top { background: #dbeafe; color: #1d4ed8; }
+  .tag-good { background: #d1fae5; color: #065f46; }
+  .tag-ok { background: #fef3c7; color: #92400e; }
+  .tag-free { background: #ede9fe; color: #5b21b6; }
+  .tag-cert { background: #fce7f3; color: #9d174d; }
+
+  /* Week blocks */
+  .week {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .week-label {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .week h3 { margin-top: 0; margin-bottom: 12px; }
+
+  ol.steps { padding-left: 20px; }
+  ol.steps li { margin-bottom: 10px; }
+  ul.plain { list-style: none; padding: 0; }
+  ul.plain li { padding: 6px 0; border-bottom: 1px solid var(--border); }
+  ul.plain li:last-child { border-bottom: none; }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--ink);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    font-size: 13px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Print */
+  @media print {
+    .container { max-width: 100%; padding: 20px; }
+    .resource, .week, .callout { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="badge">Webprofits</div>
+  <h1>Your first six weeks in email marketing</h1>
+  <p class="subtitle">
+    Everything you need to go from "what's a flow?" to confidently managing a Klaviyo account. All free. All vetted by people who actually do this for a living.
+  </p>
+  <p class="meta">Compiled April 2026 &middot; Resources cross-checked against Reddit, Klaviyo Community, and practitioner forums</p>
+</div>
+
+<!-- INTRO -->
+<p>
+  This guide exists because there's an overwhelming amount of email marketing content online and most of it is either outdated Udemy courses or guru funnels disguised as education. So we went through Reddit threads, Klaviyo Community posts, Shopify forums, and practitioner recommendations to find what actually helped real people learn.
+</p>
+<p>
+  Every resource here is free. Where a paid resource keeps getting recommended everywhere, we've included it with a note. Nothing is affiliate-linked.
+</p>
+
+<div class="callout callout-blue">
+  <div class="callout-title">How the ratings work</div>
+  <p style="margin-bottom:0;font-size:14px;">
+    <span class="tag tag-top">community favourite</span> Recommended across multiple Reddit threads, forums, and practitioner blogs. The real ones.<br>
+    <span class="tag tag-good">well regarded</span> Regularly mentioned, strong positive feedback from people who used it.<br>
+    <span class="tag tag-ok">decent</span> Works fine, but fewer independent endorsements. Use if the topic interests you.
+  </p>
+</div>
+
+<!-- LEARNING PATH -->
+<h2>The learning path</h2>
+
+<p>Don't overthink the order. Just follow this and you'll be functional in Klaviyo within six weeks. The biggest mistake new people make is spending months "learning" before touching anything. By week 3 you should be building things in a free Klaviyo account.</p>
+
+<div class="week">
+  <div class="week-label">Weeks 1-2</div>
+  <h3>Learn what email marketing actually is</h3>
+  <ol class="steps">
+    <li><a href="https://academy.hubspot.com/courses/email-marketing-certification-en">HubSpot Email Marketing Certification</a> (4 hours). This is the universal starting point. Segmentation, A/B testing, personalisation, deliverability, analytics. You get a LinkedIn cert at the end. Every subreddit recommends this as step one.</li>
+    <li><a href="https://www.coursera.org/learn/think-outside-the-inbox">Google "Think Outside the Inbox"</a> on Coursera (free to audit). Reinforces the same concepts with a practical mock-campaign project. Structured week-by-week if you prefer that format.</li>
+    <li><a href="https://www.omnisend.com/academy/start-email-marketing-journey/">Omnisend Academy fundamentals</a> (1 hour). Quick ecommerce primer. Not Klaviyo-specific but the concepts carry over directly.</li>
+  </ol>
+</div>
+
+<div class="week">
+  <div class="week-label">Week 3</div>
+  <h3>Get into Klaviyo</h3>
+  <ol class="steps">
+    <li><a href="https://academy.klaviyo.com/en-us/collections/getting-started-with-klaviyo">Klaviyo Academy "Getting Started" collection</a>. Account setup, importing contacts, creating your first email, understanding the dashboard. This is the single most recommended Klaviyo resource anywhere online. On Threads, @theemailpro put it simply: "Go into Klaviyo and do their academy courses. Best place to start."</li>
+    <li><a href="https://www.udemy.com/course/the-complete-klaviyo-email-marketing-course-for-e-commerce/">Flowium's Klaviyo Mastery 3.0</a> on Udemy (free). Full video walkthrough from Andriy Boychuk, who also runs the best Klaviyo YouTube channel. Covers flows, campaigns, forms, and customer lifecycle.</li>
+    <li>Bookmark the <a href="https://help.klaviyo.com/hc/en-us">Klaviyo Help Centre</a>. You'll be coming back here constantly. The documentation is genuinely good.</li>
+  </ol>
+</div>
+
+<div class="week">
+  <div class="week-label">Week 4</div>
+  <h3>Learn to write emails people actually read</h3>
+  <ol class="steps">
+    <li><a href="https://copyblogger.com/copywriting-101/">Copyblogger Copywriting 101</a> (free ebook). 10 lessons on direct response copywriting: headlines, benefits vs features, CTAs, persuasion. These principles apply to every marketing email you'll ever write.</li>
+    <li>Spend a few hours on <a href="https://reallygoodemails.com/">Really Good Emails</a>. Browse 50+ emails in your client's niche. Pay attention to subject lines, layout, how they handle CTAs, and how much (or little) copy they use. Start saving ones you like.</li>
+    <li><a href="https://www.jeremymac.com/blogs/news/the-1-free-email-copywriting-course-for-beginners-write-better-emails-today">Jeremy Mac's free email copywriting course</a>. Short and focused on conversion copy specifically.</li>
+  </ol>
+</div>
+
+<div class="week">
+  <div class="week-label">Week 5</div>
+  <h3>Deliverability and compliance</h3>
+  <ol class="steps">
+    <li><a href="https://www.cloudflare.com/learning/email-security/dmarc-dkim-spf/">Cloudflare's SPF/DKIM/DMARC guide</a>. Best plain-English explainer of email authentication. You need to understand this because Gmail and Outlook now require it for bulk senders.</li>
+    <li><a href="https://www.hustlermarketing.com/email-marketing-compliance-in-2026-gdpr-can-spam-privacy-laws-explained/">Hustler Marketing's compliance guide</a>. CAN-SPAM, GDPR, and PECR without the legalese.</li>
+    <li><a href="https://www.litmus.com/resources/foundations-of-email-marketing">Litmus Foundations</a>. Free course from the email rendering authority. Covers deliverability, testing, and measurement. Comes with a LinkedIn certificate.</li>
+  </ol>
+</div>
+
+<div class="week">
+  <div class="week-label">Week 6 onwards</div>
+  <h3>Keep learning while you work</h3>
+  <ol class="steps">
+    <li>Subscribe to <a href="https://www.chasedimond.com/email-newsletter">Chase Dimond's newsletter</a> (3x/week, genuinely useful) and <a href="https://www.emailmarketingheroes.com/podcast/">The Email Marketing Show</a> podcast (20-30 min episodes, good for commutes).</li>
+    <li>Join the <a href="https://community.klaviyo.com/">Klaviyo Community forum</a> and <a href="https://www.reddit.com/r/emailmarketing/">r/emailmarketing</a>. Search before you post. Most beginner questions have been answered.</li>
+    <li>Build your swipe file. Save emails you like from <a href="https://reallygoodemails.com/">Really Good Emails</a> and <a href="https://milled.com/">Milled</a>. You'll reference these when writing campaigns.</li>
+    <li>Set up a free Klaviyo account (250 contacts, no credit card). Build a welcome flow, an abandoned cart flow, and send a campaign. This is where the learning actually sticks.</li>
+  </ol>
+</div>
+
+<!-- KLAVIYO TRAINING -->
+<h2>Klaviyo training (the full list)</h2>
+
+<p>The learning path above covers the essentials, but Klaviyo has a lot more free training if you want to go deeper.</p>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://academy.klaviyo.com/en-us">Klaviyo Academy</a> <span class="tag tag-top">community favourite</span> <span class="tag tag-free">free</span></div>
+  <div class="resource-meta"><span>All levels</span> <span>Self-paced + 60 live sessions/month</span></div>
+  <p class="verdict">Three tiers: basic, intermediate, advanced. Covers flows, segmentation, analytics, A/B testing, SMS, predictive analytics. The live sessions run across time zones so you can join one that works for you. Start with the "Getting Started" collection, then use the <a href="https://academy.klaviyo.com/en-us/learning-paths">Learning Paths</a> to structure what you tackle next.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://academy.klaviyo.com/en-us/certificates/product-certification">Klaviyo Product Certification</a> <span class="tag tag-good">well regarded</span> <span class="tag tag-cert">certificate</span></div>
+  <div class="resource-meta"><span>Intermediate</span> <span>Free</span></div>
+  <p class="verdict">Once you've been using Klaviyo for a few weeks, take this. It's a free certification you can put on LinkedIn. The Klaviyo Community actively encourages people to work toward it, and it's a decent signal to clients or employers that you know the platform.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://community.klaviyo.com/">Klaviyo Community Forum</a> <span class="tag tag-top">community favourite</span></div>
+  <div class="resource-meta"><span>All levels</span> <span>Free</span></div>
+  <p class="verdict">Not a course, but genuinely useful. Search past questions (nearly every beginner problem has already been solved), watch the "Level Up with Klaviyo" videos, and get help from Klaviyo staff directly. The culture is welcoming. No question is too basic.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://chasedimond.podia.com/free-ecommerce-email-marketing-course">Chase Dimond's free ecommerce email course</a> <span class="tag tag-good">well regarded</span> <span class="tag tag-free">free</span></div>
+  <div class="resource-meta"><span>Beginner-Intermediate</span></div>
+  <p class="verdict">Chase has driven $200M+ in email-attributable revenue and was voted #1 ecommerce influencer by Shopify. His free course covers ecommerce email fundamentals and Klaviyo flows. He also has a <a href="https://www.chasedimond.com/klaviyo-flows-guide">free Klaviyo Flows Guide</a> that walks through every essential flow with setup instructions.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://magnetmonster.com/blog/klaviyo-email-marketing-course">Magnet Monster's free Klaviyo course</a> <span class="tag tag-ok">decent</span> <span class="tag tag-free">free</span></div>
+  <div class="resource-meta"><span>Beginner-Intermediate</span></div>
+  <p class="verdict">From Adam Kitchen's agency (top 0.2% Klaviyo Elite Partner). Practical and written from an agency perspective, which is useful if you're learning in an agency context.</p>
+</div>
+
+<!-- COPYWRITING -->
+<h2>Email copywriting</h2>
+
+<p>You can know Klaviyo inside out, but if you can't write an email that gets opened and clicked, none of it matters. These resources teach you how to write copy that actually converts.</p>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://copyblogger.com/copywriting-101/">Copyblogger Copywriting 101</a> <span class="tag tag-good">well regarded</span></div>
+  <div class="resource-meta"><span>Free ebook (PDF)</span> <span>Beginner</span></div>
+  <p class="verdict">10 lessons on direct response copywriting. Headlines, subject lines, benefits vs features, CTAs. One of the most referenced free copywriting resources online. Also grab their <a href="https://copyblogger.com/wp-content/uploads/2022/09/Email-Marketing-Ebook.pdf">Email Marketing ebook</a> (free PDF, direct download) which covers list building and making offers.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://jacobmcmillen.com/email-copywriting/">Jacob McMillen's guide to email copywriting</a> <span class="tag tag-ok">decent</span></div>
+  <div class="resource-meta"><span>Free guide</span> <span>Beginner-Intermediate</span></div>
+  <p class="verdict">A thorough blog-post-turned-guide from a working copywriter. Covers the full methodology, not just tips.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://copywritingcourse.com/free-copywriting-course/">CopywritingCourse.com free course</a> <span class="tag tag-ok">decent</span></div>
+  <div class="resource-meta"><span>Free</span> <span>Beginner</span></div>
+  <p class="verdict">General copywriting principles that apply to email. Good if you want to broaden your writing skills beyond just email.</p>
+</div>
+
+<!-- YOUTUBE -->
+<h2>YouTube channels worth your time</h2>
+
+<p>There are hundreds of email marketing YouTubers. Most are trying to sell you a course. These ones actually teach you things in their free content.</p>
+
+<div class="resource">
+  <div class="resource-name">Flowium (Andriy Boychuk) <span class="tag tag-top">community favourite</span></div>
+  <div class="resource-meta"><span>Weekly uploads</span> <span>Klaviyo + ecommerce</span></div>
+  <p class="verdict">The most consistently recommended Klaviyo YouTube channel. Andriy runs Flowium (agency trusted by True Classic, Swoon, Balsam Hill) and every video is Klaviyo-focused and practical. His Udemy course is the structured version of his YouTube content. Reddit and the Klaviyo Community both point to him regularly.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name">eCommerce Badassery (Jessica Totillo Coster) <span class="tag tag-good">well regarded</span></div>
+  <div class="resource-meta"><span>Klaviyo + Shopify</span></div>
+  <p class="verdict">Jessica has used Klaviyo since 2016 and focuses on helping bootstrapped ecommerce entrepreneurs. Her paid "Klaviyo Badassery" course has a good reputation, but the YouTube content alone is solid. Particularly useful if you're working with Shopify stores.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name">Simplilearn <span class="tag tag-ok">decent</span></div>
+  <div class="resource-meta"><span>5-hour email marketing full course (free)</span></div>
+  <p class="verdict">If you want one long video that covers everything from basics to advanced (including Mailchimp walkthrough and AI in email marketing), this works. Updated May 2025. Good production quality. Not Klaviyo-specific though.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name">H-EDUCATE <span class="tag tag-ok">decent</span></div>
+  <div class="resource-meta"><span>Technical email marketing</span></div>
+  <p class="verdict">Most courses skip the technical side. H-EDUCATE covers email infrastructure, deliverability tools, and how things work under the hood. Good complement to the strategy-focused resources.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name">Klaviyo (official channel) <span class="tag tag-good">well regarded</span></div>
+  <div class="resource-meta"><span>Platform walkthroughs, feature updates</span></div>
+  <p class="verdict">Direct from the source. Best used alongside Klaviyo Academy courses when you want a video walkthrough of a specific feature.</p>
+</div>
+
+<!-- SWIPE FILES -->
+<h2>Inspiration and swipe files</h2>
+
+<p>You'll develop your eye for what good emails look like by studying hundreds of them. These are where you do that.</p>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://reallygoodemails.com/">Really Good Emails</a> <span class="tag tag-top">community favourite</span></div>
+  <p class="verdict">Browse this weekly. Emails sorted by category (welcome series, cart abandonment, promotional, etc.). Save the ones you like into collections. Study how they lay things out and where they put their buttons. Litmus references it, Reddit references it, every email marketing guide references it. You should be spending time here regularly.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://milled.com/">Milled</a> <span class="tag tag-good">well regarded</span></div>
+  <p class="verdict">Searchable archive of email newsletters from thousands of brands. Great for competitive research. Search your client's competitors and see what they're sending.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://swipefile.com/category/emails">SwipeFile.com</a> / <a href="https://swiped.co/types/email/">Swiped.co</a></div>
+  <p class="verdict">Both have 300+ email examples. Less curated than Really Good Emails, but useful if you want more volume in your swipe file.</p>
+</div>
+
+<div class="callout callout-amber">
+  <div class="callout-title">Note on MailCharts</div>
+  <p style="margin-bottom:0;font-size:14px;">MailCharts used to be great for competitive email intelligence (they track 30,000+ companies). But they removed self-serve plans in 2026 and locked everything behind expensive contracts. Not worth pursuing as a free resource anymore. Stick with Milled and Really Good Emails.</p>
+</div>
+
+<!-- BOOKS -->
+<h2>Books and ebooks</h2>
+
+<h3>Free downloads</h3>
+
+<table>
+  <tr>
+    <th>Resource</th>
+    <th>What you'll get</th>
+  </tr>
+  <tr>
+    <td><a href="https://copyblogger.com/wp-content/uploads/2020/08/Copywriting-101.pdf">Copyblogger Copywriting 101</a></td>
+    <td>10-lesson direct response copywriting fundamentals. The PDF that keeps getting recommended everywhere.</td>
+  </tr>
+  <tr>
+    <td><a href="https://copyblogger.com/wp-content/uploads/2022/09/Email-Marketing-Ebook.pdf">Copyblogger Email Marketing ebook</a></td>
+    <td>List building, relationships, and making offers. Direct PDF download, no signup needed.</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.emailtooltester.com/en/free-email-marketing-ebook/">Email Tool Tester crash course</a></td>
+    <td>10+ years of email marketing experience distilled into a beginner ebook.</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.hubspot.com/resources/ebook/email-marketing">HubSpot email marketing ebooks</a></td>
+    <td>Multiple ebooks covering subject lines, templates, and strategy. Solid reference material.</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.zerobounce.net/email-guides">ZeroBounce email guides</a></td>
+    <td>Deliverability and list hygiene. Niche but important when you start managing real lists.</td>
+  </tr>
+</table>
+
+<h3>Books worth buying (not free, but referenced everywhere)</h3>
+
+<p>These three come up in virtually every "best email marketing books" thread on Reddit. You don't need them right away, but when you're ready to go deeper:</p>
+
+<table>
+  <tr>
+    <th>Book</th>
+    <th>Why it keeps getting recommended</th>
+  </tr>
+  <tr>
+    <td><strong>Permission Marketing</strong> by Seth Godin</td>
+    <td>The philosophical foundation of modern email marketing. Godin is widely considered the person who defined permission-based marketing. Short read, still relevant decades later.</td>
+  </tr>
+  <tr>
+    <td><strong>Invisible Selling Machine</strong> by Ryan Deiss</td>
+    <td>Step-by-step email automation system for ecommerce. Short, practical, and specific. One Reddit commenter said "should be on the shelf of anyone doing email marketing."</td>
+  </tr>
+  <tr>
+    <td><strong>DotCom Secrets</strong> by Russell Brunson</td>
+    <td>Funnel strategy and email sequences. One of the most referenced marketing books in Reddit entrepreneur communities. More about the business logic of email than the writing itself.</td>
+  </tr>
+</table>
+
+<!-- PODCASTS -->
+<h2>Podcasts</h2>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://www.emailmarketingheroes.com/podcast/">The Email Marketing Show</a> (Rob & Kennedy) <span class="tag tag-top">community favourite</span></div>
+  <div class="resource-meta"><span>Weekly, Wednesdays</span> <span>20-30 min episodes</span> <span>Apple / Spotify</span></div>
+  <p class="verdict">The most consistently recommended email marketing podcast. It's actually entertaining, which is rare for this topic. Covers both B2B and B2C. Good for commutes or lunch breaks.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name">Email Einstein (Flowium) <span class="tag tag-ok">decent</span></div>
+  <div class="resource-meta"><span>Ecommerce-focused</span> <span>Apple / Spotify</span></div>
+  <p class="verdict">From Andriy Boychuk and Vira Sadlak at Flowium. Same team behind Klaviyo Mastery. Practical, ecommerce-specific episodes.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name">The McMethod Email Marketing Podcast <span class="tag tag-ok">decent</span></div>
+  <p class="verdict">Actionable advice with real-world examples. Good at making complex topics feel approachable.</p>
+</div>
+
+<!-- COMMUNITIES -->
+<h2>Communities to join</h2>
+
+<p>You learn faster when you can ask questions and see what problems other people are solving. Here's where email marketers actually hang out.</p>
+
+<h3>Reddit</h3>
+<table>
+  <tr><th>Subreddit</th><th>What to use it for</th></tr>
+  <tr><td><a href="https://www.reddit.com/r/emailmarketing/">r/emailmarketing</a> (~63K)</td><td>General email marketing Q&A, strategy discussions, tool recommendations</td></tr>
+  <tr><td><a href="https://www.reddit.com/r/Klaviyo/">r/Klaviyo</a></td><td>Klaviyo-specific troubleshooting and tips</td></tr>
+  <tr><td><a href="https://www.reddit.com/r/ecommerce/">r/ecommerce</a></td><td>Email marketing in ecommerce context, broader DTC discussions</td></tr>
+  <tr><td><a href="https://www.reddit.com/r/digital_marketing/">r/digital_marketing</a></td><td>Cross-channel marketing discussions including email</td></tr>
+</table>
+
+<h3>Slack and Discord</h3>
+<table>
+  <tr><th>Community</th><th>What it is</th></tr>
+  <tr><td><a href="https://onlinegeniuses.com/">Online Geniuses</a> (Slack, 53K+)</td><td>Largest digital marketing Slack group. Channels for PPC, CRO, ecommerce, email, and job postings.</td></tr>
+  <tr><td>All Things Retention (Slack)</td><td>Focused on ecommerce retention: email, SMS, loyalty, subscriptions. Monthly webinars and a dedicated community manager.</td></tr>
+  <tr><td>Furlough (Discord, 27K+)</td><td>Marketers, entrepreneurs, and business owners sharing knowledge. More informal, younger crowd.</td></tr>
+</table>
+
+<!-- NEWSLETTERS -->
+<h2>Newsletters to subscribe to</h2>
+
+<p>These are people whose emails you actually want in your inbox. Subscribe and pay attention to how they write, not just what they say.</p>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://www.chasedimond.com/email-newsletter">Chase Dimond</a> <span class="tag tag-top">community favourite</span></div>
+  <div class="resource-meta"><span>3x/week</span> <span>100K+ subscribers</span></div>
+  <p class="verdict">Covers email flows, campaigns, copywriting, and advertising. Actual tactics, not motivational fluff. $200M+ in email-attributable revenue behind his advice. Shopify voted him #1 ecommerce influencer.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://bensettle.com/">Ben Settle</a> <span class="tag tag-good">well regarded</span></div>
+  <div class="resource-meta"><span>Daily emails</span></div>
+  <p class="verdict">Ben's daily emails are themselves a masterclass in email writing. He offers a free digital copy of his newsletter and 40+ hours of free content in his mobile app. His style is polarising (very direct, sometimes abrasive) and won't work for every brand. But studying his technique is worth it. Reddit and Quora regularly name him as one of the best email writers working today.</p>
+</div>
+
+<div class="resource">
+  <div class="resource-name"><a href="https://www.klaviyo.com/blog">Klaviyo Blog</a> / <a href="https://www.litmus.com/blog">Litmus Blog</a> <span class="tag tag-good">well regarded</span></div>
+  <p class="verdict">Klaviyo for ecommerce email strategy and platform updates. Litmus for email design, rendering, testing, and deliverability. Both publish consistently useful content.</p>
+</div>
+
+<!-- WARNINGS -->
+<h2>Things to watch out for</h2>
+
+<div class="callout callout-red">
+  <div class="callout-title">Time wasters</div>
+  <p style="font-size:14px;">
+    <strong>Outdated Udemy courses.</strong> Many email marketing courses on Udemy haven't been updated since 2020-2022. The Klaviyo interface has changed a lot since then. Always check the "last updated" date before enrolling.<br><br>
+    <strong>Mailchimp courses when you need Klaviyo.</strong> The concepts overlap, but the platform-specific skills don't. If your job uses Klaviyo, learn Klaviyo from the start. Don't detour through Mailchimp.<br><br>
+    <strong>Guru sales funnels.</strong> Some YouTubers give you 10% of the value for free then spend the rest pushing a $997 course. Flowium, Chase Dimond's free content, and Klaviyo Academy all give away genuinely useful material without the hard sell.<br><br>
+    <strong>Email on Acid.</strong> Good tool, but paid only. Don't waste time trying to get a free account. Litmus has more free educational content.
+  </p>
+</div>
+
+<div class="callout callout-green">
+  <div class="callout-title">Three rules for the first month</div>
+  <p style="font-size:14px;">
+    <strong>Don't learn everything before doing anything.</strong> After week 2-3, start building in a free Klaviyo account. You learn by doing. A welcome flow you built yourself teaches more than 10 hours of video.<br><br>
+    <strong>Don't buy courses yet.</strong> There is enough free content in this guide to take you from zero to managing a client account. The paid course ecosystem is enormous and often predatory.<br><br>
+    <strong>Build your swipe file from day one.</strong> Every good email you see, save it. You'll reference these when writing campaigns and you'll be grateful you started collecting early.
+  </p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Compiled April 2026 by the Webprofits email team. Resources were cross-referenced against Reddit (r/emailmarketing, r/Klaviyo, r/ecommerce, r/entrepreneur), the Klaviyo Community forum, Shopify Community, Threads, Quora, and practitioner blogs. All resources verified as available and free at time of publication.</p>
+  <p style="margin-top:8px;">Questions? Ask in the team Slack channel or ping Hani.</p>
+</div>
+
+</div>
+</body>
+</html>
