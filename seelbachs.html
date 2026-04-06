@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seelbach's — 3,789% Conversion Lift | Hani Siraj</title>
+  <meta name="description" content="A custom real-time stock integration that led to a 3,789% increase in browse abandonment conversions.">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="particles.js" defer></script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <div class="page-transition" style="opacity:1"></div>
+
+  <nav class="nav"><div class="nav__inner"><a href="index.html" class="nav__logo">Hani Siraj</a><button class="nav__mobile-toggle" aria-label="Menu">☰</button><ul class="nav__links"><li><a href="index.html#work">Work</a></li><li><a href="index.html#showcase">Emails</a></li><li><a href="index.html#about">About</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="https://drive.google.com/file/d/1jH6hPxULwjh9eu-zOR6MKU2Me5lBRbl6/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul></div></nav>
+
+  <section class="case-hero space space--tr">
+    <p class="case-hero__brand">Seelbach's &middot; United States</p>
+    <h1 class="case-hero__title">Emails that knew what was in stock before the customer clicked.</h1>
+    <p class="case-hero__subtitle">How a real-time Shopify stock integration turned abandoned browse emails from a frustration point into a $59K revenue engine in two weeks.</p>
+    <div class="case-hero__metrics">
+      <div><div class="case-hero__metric-value">3,789%</div><div class="case-hero__metric-label">Browse abandonment conversion lift</div></div>
+      <div><div class="case-hero__metric-value">122%</div><div class="case-hero__metric-label">Checkout abandonment conversion lift</div></div>
+      <div><div class="case-hero__metric-value">$59.5K</div><div class="case-hero__metric-label">Additional revenue in 2 weeks</div></div>
+    </div>
+  </section>
+
+  <div class="case-body">
+    <div class="container">
+      <a href="index.html#work" class="case-back">&larr; All work</a>
+
+      <div class="case-section reveal">
+        <p class="case-section__eyebrow">The Brand</p>
+        <h2 class="case-section__title">A craft spirits retailer where limited-edition bottles sell out in minutes.</h2>
+        <div class="case-section__text">
+          <p>Seelbach's specialises in curated craft spirits, particularly rare and limited-edition bourbons, whiskeys, and fine liquors. They cater to serious connoisseurs and regularly run exclusive email drops featuring new lineups that sell out almost instantly.</p>
+        </div>
+      </div>
+
+      <div class="case-section reveal">
+        <p class="case-section__eyebrow">The Challenge</p>
+        <h2 class="case-section__title">Automated emails were pushing products that were already gone.</h2>
+        <div class="case-section__text">
+          <p>Because Seelbach's inventory moves so fast, their automated abandonment flows (browse, cart, and checkout) were frequently promoting products that had already sold out. A customer would browse a rare bourbon, leave the site, receive an abandonment email hours later, click through, and land on an out-of-stock page. It was eroding trust and wasting high-intent traffic.</p>
+        </div>
+      </div>
+
+      <div class="case-section reveal">
+        <p class="case-section__eyebrow">The Strategy</p>
+        <h2 class="case-section__title">Real-time stock checks at the moment of email open, not at the moment of send.</h2>
+        <div class="case-section__text">
+          <p><strong>Dynamic stock integration.</strong> I built a custom product feature using RetainIQ's dynamic widget functionality that checked Shopify stock levels in real time at the moment the subscriber opened the email, not when it was sent. If a product had sold out between send and open, the email creative would dynamically update to show an "Out of Stock" tag and push the subscriber toward similar products in the same category.</p>
+          <p><strong>Social proof and urgency layering.</strong> I paired the stock integration with live social proof elements showing remaining stock counts and product ratings. For a brand where scarcity is the selling point, showing "3 left in stock" next to a 4.8-star rating turned browsing intent into purchase urgency.</p>
+        </div>
+      </div>
+
+      <div class="case-section reveal">
+        <p class="case-section__eyebrow">The Results</p>
+        <h2 class="case-section__title">$59,548 in additional revenue. Two weeks.</h2>
+      </div>
+
+      <div class="case-stats-row">
+        <div class="case-stat-card"><div class="case-stat-card__value">122%</div><div class="case-stat-card__label">Abandoned checkout conversion lift</div></div>
+        <div class="case-stat-card"><div class="case-stat-card__value">3,789%</div><div class="case-stat-card__label">Browse abandonment conversion lift</div></div>
+        <div class="case-stat-card"><div class="case-stat-card__value">34%</div><div class="case-stat-card__label">Add-to-cart abandonment conversion lift</div></div>
+      </div>
+
+      <div class="case-section reveal" style="margin-top: 56px;">
+        <p class="case-section__eyebrow">Key Takeaway</p>
+        <h2 class="case-section__title">The email wasn't broken. The product data was stale.</h2>
+        <div class="case-section__text">
+          <p>Seelbach's abandonment flows had good open rates and solid copy. The problem was that the product being shown no longer existed by the time the subscriber opened the email. By shifting the stock check from send-time to open-time, we turned a frustration point into the highest-converting flow in the account. The browse abandonment conversion rate alone increased by 3,789%.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 72px; padding-top: 36px; border-top: 1px solid var(--white-03);">
+        <a href="index.html#work" class="case-back">&larr; Back to all work</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 Hani Siraj</p></div></footer>
+</body>
+</html>
