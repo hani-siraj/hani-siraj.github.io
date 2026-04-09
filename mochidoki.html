@@ -10,26 +10,89 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="particles.js" defer></script>
   <script src="main.js" defer></script>
+  <style>
+    .challenge-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .challenge-card {
+      background: var(--white-03);
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .challenge-card__icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .challenge-card__text {
+      font-size: 14px;
+      color: var(--white-48);
+      line-height: 1.5;
+    }
+
+    /* Email screenshots: narrow portraits, constrain height */
+    .email-pair {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto;
+    }
+
+    .email-pair img {
+      max-height: 300px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    /* Wide banner image */
+    .solution-banner {
+      display: block;
+      max-width: 500px;
+      width: 100%;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 834px) {
+      .challenge-cards { grid-template-columns: 1fr; gap: 10px; }
+      .email-pair img { max-height: 240px; }
+    }
+  </style>
 </head>
 <body>
 
   <div class="page-transition" style="opacity:1"></div>
 
-  <nav class="nav"><div class="nav__inner"><a href="index.html" class="nav__logo">Hani Siraj</a><button class="nav__mobile-toggle" aria-label="Menu">☰</button><ul class="nav__links"><li><a href="index.html#work">Work</a></li><li><a href="index.html#showcase">Emails</a></li><li><a href="index.html#about">About</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="https://drive.google.com/file/d/1jH6hPxULwjh9eu-zOR6MKU2Me5lBRbl6/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul></div></nav>
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Hani Siraj</a>
+      <button class="nav__mobile-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav__links">
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#showcase">Emails</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="assets/Hani_Siraj_Resume_2026.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <!-- HERO -->
   <section class="case-hero space space--tr">
+    <img src="assets/logos/mochidoki.png" alt="Mochidoki" style="height:40px; filter: brightness(0) invert(1); margin: 0 auto 6px; display:block;">
     <p class="case-hero__brand">Mochidoki &middot; New York</p>
-    <h1 class="case-hero__title">208% more revenue from the same email list.</h1>
-    <p class="case-hero__subtitle">An email marketing strategy that sparked a 208% revenue increase and higher store footfall for a cult New York mochi ice cream brand.</p>
+    <h1 class="case-hero__title">208% increase in email revenue.</h1>
+    <p class="case-hero__subtitle">An email marketing strategy that sparked a 208% revenue increase and higher store footfall.</p>
     <div class="case-hero__metrics">
       <div><div class="case-hero__metric-value">208%</div><div class="case-hero__metric-label">Email revenue increase</div></div>
       <div><div class="case-hero__metric-value">55%</div><div class="case-hero__metric-label">Click rate increase</div></div>
       <div><div class="case-hero__metric-value">102%</div><div class="case-hero__metric-label">Placed order rate increase</div></div>
-    </div>
-    <!-- Hero visual -->
-    <div class="case-hero__visual">
-      <div class="case-hero__visual-placeholder">Email creative hero — add Mochidoki campaign screenshot</div>
     </div>
   </section>
 
@@ -37,149 +100,67 @@
     <div class="container">
       <a href="index.html#work" class="case-back">&larr; All work</a>
 
-      <!-- ABOUT -->
+      <!-- About -->
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">The Brand</p>
-        <h2 class="case-section__title">New York's cult mochi ice cream company.</h2>
+        <p class="case-section__eyebrow">About</p>
         <div class="case-section__text">
           <p>Mochidoki is a renowned New York-based mochi ice cream company, celebrated for its innovative and sophisticated Japanese-inspired desserts. Committed to using only the finest ingredients, their mission is "Connecting people by crafting moments of joy and discovery."</p>
         </div>
       </div>
 
-      <!-- CHALLENGES — visual cards -->
+      <!-- Challenges — 3 icon cards -->
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">Challenges Faced</p>
-        <h2 class="case-section__title">Four sales channels, one email list, and no strategy to connect them.</h2>
+        <p class="case-section__eyebrow">Challenges faced</p>
       </div>
 
-      <div class="visual-cards">
-        <div class="visual-card">
-          <div class="visual-card__number">01</div>
-          <div class="visual-card__title">Multi-channel cannibalisation</div>
-          <div class="visual-card__text">Promoting B2B, DTC e-commerce, Amazon Fresh, and retail stores simultaneously without undermining each other. Every channel was competing for the same subscriber's attention.</div>
+      <div class="challenge-cards">
+        <div class="challenge-card">
+          <div class="challenge-card__icon">&#128722;</div>
+          <div class="challenge-card__text">Promoting multiple sales channels simultaneously without undermining each other. B2B, B2C e-commerce, Amazon Fresh, and retail stores.</div>
         </div>
-        <div class="visual-card">
-          <div class="visual-card__number">02</div>
-          <div class="visual-card__title">$75 minimum order barrier</div>
-          <div class="visual-card__text">The DTC store had a $75 minimum order value, which meant not every subscriber was the right fit for an e-commerce push. Audiences needed to be routed to the right channel based on their likelihood to convert.</div>
+        <div class="challenge-card">
+          <div class="challenge-card__icon">&#127919;</div>
+          <div class="challenge-card__text">Overcoming a $75 minimum order value on the website and channelling the right audience to the right business channel.</div>
         </div>
-        <div class="visual-card">
-          <div class="visual-card__number">03</div>
-          <div class="visual-card__title">Zero segmentation or personalisation</div>
-          <div class="visual-card__text">Standard email campaigns lacked effective audience segmentation and personalisation. Every subscriber received the same generic message regardless of buying behaviour, location, or purchase history.</div>
+        <div class="challenge-card">
+          <div class="challenge-card__icon">&#9993;</div>
+          <div class="challenge-card__text">Standard email campaigns lacked effective audience segmentation and personalisation.</div>
         </div>
       </div>
 
-      <!-- SOLUTION 1: B2B -->
+      <!-- Solutions Implemented -->
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">Solution 1</p>
-        <h2 class="case-section__title">Enhanced B2B experience: frequency-based reorder flows.</h2>
+        <p class="case-section__eyebrow">Solutions implemented</p>
+        <h2 class="case-section__title">Enhanced B2B Experience</h2>
         <div class="case-section__text">
-          <p>I reclassified B2B users into six buckets based on their historical reorder frequency: 7, 14, 21, 30, 45, and 60-day intervals. Each bucket triggered a personalised automated flow timed to when that business customer was statistically likely to reorder, improving repeat rates and lifetime value.</p>
+          <p>B2B customers accounted for a significant portion of online revenue, regularly reordering from the site. Previously, the brand segmented all B2B users and sent out re-order reminder campaigns three times a month. I saw an opportunity to optimise this and boost the re-order rate.</p>
+          <p>By classifying B2B users into six buckets based on their average reorder frequency (7, 14, 21, 30, 45, and 60 days), I set up an automated, personalised replenishment flow. This greatly improved repeat order rates, increased LTV, and enhanced the B2B customer experience.</p>
+        </div>
+        <!-- B2B emails: narrow portraits, height-constrained side by side -->
+        <div class="email-pair">
+          <img src="assets/emails/mochidoki-5.png" alt="B2B reorder email: It's been a while since you stocked up" loading="lazy">
+          <img src="assets/emails/mochidoki-6.png" alt="B2B reorder email: Order now for the week ahead" loading="lazy">
         </div>
       </div>
 
-      <!-- Flow diagram showing the 6 buckets -->
-      <div class="flow-steps scrub-up">
-        <div class="flow-step">
-          <div class="flow-step__label">Bucket 1</div>
-          <div class="flow-step__title">7 days</div>
-          <div class="flow-step__desc">High-frequency reorders</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__label">Bucket 2</div>
-          <div class="flow-step__title">14 days</div>
-          <div class="flow-step__desc">Bi-weekly restocking</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__label">Bucket 3</div>
-          <div class="flow-step__title">21 days</div>
-          <div class="flow-step__desc">Three-week cadence</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__label">Bucket 4</div>
-          <div class="flow-step__title">30 days</div>
-          <div class="flow-step__desc">Monthly reorders</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__label">Bucket 5</div>
-          <div class="flow-step__title">45 days</div>
-          <div class="flow-step__desc">Extended cycle buyers</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__label">Bucket 6</div>
-          <div class="flow-step__title">60 days</div>
-          <div class="flow-step__desc">Quarterly accounts</div>
-        </div>
-      </div>
-
-      <!-- B2B email mockup -->
-      <div class="mockup-frame scrub-up">
-        <div class="mockup-frame__bar">
-          <div class="mockup-frame__dot"></div>
-          <div class="mockup-frame__dot"></div>
-          <div class="mockup-frame__dot"></div>
-          <div class="mockup-frame__title">B2B Reorder Flow — Email Preview</div>
-        </div>
-        <div class="mockup-frame__body">
-          <div class="mockup-frame__placeholder">
-            B2B reorder email creative
-            <span>Add screenshot of personalised B2B reorder flow email</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- SOLUTION 2: Location Targeting -->
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">Solution 2</p>
-        <h2 class="case-section__title">Location-based targeting: dynamic widgets that routed users to the right channel.</h2>
+        <h2 class="case-section__title">Location-Based Targeting</h2>
         <div class="case-section__text">
-          <p>I deployed RetainIQ dynamic widgets that targeted non-converting users based on their proximity to physical stores. If a subscriber was near a Mochidoki retail location, the email would route them there. If they were in an Amazon Fresh delivery zone, it pushed that instead. For subscribers who cleared the $75 minimum threshold, they were directed to the DTC store.</p>
-          <p>The goal was simple: convert the click into a sale through whichever channel had the lowest friction for that specific person.</p>
+          <p>I implemented location-based targeting using RetainIQ dynamic widgets to nudge users who weren't purchasing due to the $75 limit towards physical stores, retail partners, or Amazon Fresh.</p>
+          <p>I specifically targeted users who spent considerable time on the website but did not convert. If they were near a physical store, they would see dynamic creatives in the emails and flows directing them to that store. If not, they were encouraged to purchase from Amazon Fresh. This strategy effectively promoted all sales channels without cannibalising any single channel.</p>
         </div>
+        <!-- Location emails: height-constrained pair -->
+        <div class="email-pair">
+          <img src="assets/emails/mochidoki-1.png" alt="Email with product grid and Find a Store CTA" loading="lazy">
+          <img src="assets/emails/mochidoki-2.png" alt="Email variant showing products with store redirect" loading="lazy">
+        </div>
+        <!-- Wide store redirect banner on its own row -->
+        <img src="assets/emails/mochidoki-4.png" alt="Store redirect: Shop Mochidoki at the Upper East Side store near you" class="solution-banner" loading="lazy">
       </div>
 
-      <!-- Location targeting mockups -->
-      <div class="mockup-grid scrub-up">
-        <div class="mockup-frame">
-          <div class="mockup-frame__bar">
-            <div class="mockup-frame__dot"></div>
-            <div class="mockup-frame__dot"></div>
-            <div class="mockup-frame__dot"></div>
-            <div class="mockup-frame__title">Near a physical store</div>
-          </div>
-          <div class="mockup-frame__body">
-            <div class="mockup-frame__placeholder">
-              Location widget — store redirect
-              <span>Add screenshot of dynamic widget routing user to nearby retail location</span>
-            </div>
-          </div>
-        </div>
-        <div class="mockup-frame">
-          <div class="mockup-frame__bar">
-            <div class="mockup-frame__dot"></div>
-            <div class="mockup-frame__dot"></div>
-            <div class="mockup-frame__dot"></div>
-            <div class="mockup-frame__title">Amazon Fresh zone</div>
-          </div>
-          <div class="mockup-frame__body">
-            <div class="mockup-frame__placeholder">
-              Location widget — Amazon Fresh redirect
-              <span>Add screenshot of dynamic widget routing user to Amazon Fresh</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pull quote -->
-      <div class="case-quote scrub-up">
-        "The list wasn't the problem. The targeting was."
-      </div>
-
-      <!-- RESULTS -->
+      <!-- Results -->
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">The Results</p>
-        <h2 class="case-section__title">Every metric that mattered moved in the right direction.</h2>
+        <p class="case-section__eyebrow">Results</p>
       </div>
 
       <div class="case-stats-row">
@@ -188,20 +169,19 @@
         <div class="case-stat-card"><div class="case-stat-card__value">102%</div><div class="case-stat-card__label">Increase in placed order rates</div></div>
       </div>
 
-      <div class="case-section reveal" style="margin-top: 56px;">
-        <p class="case-section__eyebrow">Key Takeaway</p>
-        <h2 class="case-section__title">Mochidoki didn't need more subscribers. They needed smarter routing.</h2>
-        <div class="case-section__text">
-          <p>By matching each subscriber to the right channel and the right cadence, the same list generated more than double the revenue with significantly higher engagement across the board. The B2B frequency flows turned sporadic wholesale orders into predictable revenue, and the location widgets solved the $75 minimum problem by simply sending people to the channel where they were most likely to buy.</p>
-        </div>
+      <!-- What this meant -->
+      <div class="case-section reveal" style="margin-top: 48px;">
+        <p class="case-section__eyebrow">What this meant to the brand</p>
+        <h2 class="case-section__title">Same list, 2x+ revenue. B2B frequency flows made wholesale predictable. Location widgets solved the $75 problem. Every subscriber got a path that matched how they buy.</h2>
       </div>
 
-      <div style="margin-top: 72px; padding-top: 36px; border-top: 1px solid var(--white-03);">
+      <div style="margin-top: 56px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.04);">
         <a href="index.html#work" class="case-back">&larr; Back to all work</a>
       </div>
     </div>
   </div>
 
   <footer class="footer"><div class="container"><p>&copy; 2026 Hani Siraj</p></div></footer>
+
 </body>
 </html>

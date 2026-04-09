@@ -3,28 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seelbach's — 3,789% Conversion Lift | Hani Siraj</title>
-  <meta name="description" content="A custom real-time stock integration that led to a 3,789% increase in browse abandonment conversions.">
+  <title>Seelbach's — 3,789% Conversion Increase | Hani Siraj</title>
+  <meta name="description" content="A custom product feature that led to a 3,789% increase in conversions for Seelbach's craft spirits.">
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="particles.js" defer></script>
   <script src="main.js" defer></script>
+  <style>
+    /*
+      =============================================
+      ANNOTATION CONTROLS — edit vars to tune
+      =============================================
+    */
+    .annotated-block {
+      /* Note position + font */
+      --font-size: 20px;
+      --font-color: #e8d5b5;
+      --note-mb: 12px;          /* space between note and image */
+
+      /* Arrow */
+      --arrow-w: 60px;
+      --arrow-h: 40px;
+      --arrow-rotate: 0deg;
+      --arrow-flip: 1;          /* -1 to flip horizontally */
+
+      /* Image */
+      --img-max-w: 600px;
+
+      position: relative;
+      margin: 28px 0;
+    }
+
+    .annotated-block__header {
+      text-align: center;
+      margin-bottom: var(--note-mb);
+    }
+
+    .annotated-block__text {
+      font-family: 'Caveat', cursive;
+      font-size: var(--font-size);
+      font-weight: 700;
+      color: var(--font-color);
+      line-height: 1.2;
+    }
+
+    .annotated-block__arrow {
+      display: block;
+      width: var(--arrow-w);
+      height: var(--arrow-h);
+      margin: 8px auto 0;
+      transform: rotate(var(--arrow-rotate)) scaleX(var(--arrow-flip));
+    }
+
+    .annotated-block__arrow path {
+      fill: none;
+      stroke: var(--font-color);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+    }
+
+    .annotated-block__image {
+      display: block;
+      max-width: var(--img-max-w);
+      width: 100%;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    /* Stock check image: tall portrait */
+    .solution-img--stock {
+      display: block;
+      max-height: 320px;
+      width: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .case-revenue-highlight {
+      text-align: center;
+      padding: 36px 20px;
+      margin: 24px 0;
+    }
+
+    .case-revenue-highlight__label {
+      font-size: 14px;
+      color: var(--white-48);
+      margin-bottom: 8px;
+      letter-spacing: -0.224px;
+    }
+
+    .case-revenue-highlight__value {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.28px;
+    }
+
+    @media (max-width: 600px) {
+      .annotated-block { --font-size: 17px; }
+    }
+  </style>
 </head>
 <body>
 
   <div class="page-transition" style="opacity:1"></div>
 
-  <nav class="nav"><div class="nav__inner"><a href="index.html" class="nav__logo">Hani Siraj</a><button class="nav__mobile-toggle" aria-label="Menu">☰</button><ul class="nav__links"><li><a href="index.html#work">Work</a></li><li><a href="index.html#showcase">Emails</a></li><li><a href="index.html#about">About</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="https://drive.google.com/file/d/1jH6hPxULwjh9eu-zOR6MKU2Me5lBRbl6/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li></ul></div></nav>
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Hani Siraj</a>
+      <button class="nav__mobile-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav__links">
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#showcase">Emails</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="assets/Hani_Siraj_Resume_2026.pdf" target="_blank" rel="noopener">Resume</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <section class="case-hero space space--tr">
+    <img src="assets/logos/seelbachs.svg" alt="Seelbach's" style="height:40px; filter: brightness(0) invert(1); margin: 0 auto 6px; display:block;">
     <p class="case-hero__brand">Seelbach's &middot; United States</p>
-    <h1 class="case-hero__title">Emails that knew what was in stock before the customer clicked.</h1>
-    <p class="case-hero__subtitle">How a real-time Shopify stock integration turned abandoned browse emails from a frustration point into a $59K revenue engine in two weeks.</p>
+    <h1 class="case-hero__title">A custom product feature that led to a 3,789% increase in conversions.</h1>
+    <p class="case-hero__subtitle">Real-time stock intelligence in automated email flows for a craft spirits retailer.</p>
     <div class="case-hero__metrics">
-      <div><div class="case-hero__metric-value">3,789%</div><div class="case-hero__metric-label">Browse abandonment conversion lift</div></div>
-      <div><div class="case-hero__metric-value">122%</div><div class="case-hero__metric-label">Checkout abandonment conversion lift</div></div>
-      <div><div class="case-hero__metric-value">$59.5K</div><div class="case-hero__metric-label">Additional revenue in 2 weeks</div></div>
+      <div><div class="case-hero__metric-value">3,789%</div><div class="case-hero__metric-label">Browse abandonment conversion</div></div>
+      <div><div class="case-hero__metric-value">122%</div><div class="case-hero__metric-label">Checkout abandonment conversion</div></div>
+      <div><div class="case-hero__metric-value">34%</div><div class="case-hero__metric-label">Cart abandonment conversion</div></div>
     </div>
   </section>
 
@@ -33,55 +143,76 @@
       <a href="index.html#work" class="case-back">&larr; All work</a>
 
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">The Brand</p>
-        <h2 class="case-section__title">A craft spirits retailer where limited-edition bottles sell out in minutes.</h2>
+        <p class="case-section__eyebrow">About</p>
         <div class="case-section__text">
-          <p>Seelbach's specialises in curated craft spirits, particularly rare and limited-edition bourbons, whiskeys, and fine liquors. They cater to serious connoisseurs and regularly run exclusive email drops featuring new lineups that sell out almost instantly.</p>
+          <p>Seelbach's specialises in offering a curated selection of craft spirits, particularly rare and limited-edition bourbons, whiskeys, and other fine liquors. Catering to serious connoisseurs, they frequently conduct exclusive email drops featuring new lineups that often sell out almost instantly.</p>
         </div>
       </div>
 
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">The Challenge</p>
-        <h2 class="case-section__title">Automated emails were pushing products that were already gone.</h2>
+        <p class="case-section__eyebrow">Challenge faced</p>
         <div class="case-section__text">
-          <p>Because Seelbach's inventory moves so fast, their automated abandonment flows (browse, cart, and checkout) were frequently promoting products that had already sold out. A customer would browse a rare bourbon, leave the site, receive an abandonment email hours later, click through, and land on an out-of-stock page. It was eroding trust and wasting high-intent traffic.</p>
+          <p>Seelbach's automated email flows (browse abandonment, cart abandonment, checkout abandonment) often reminded users about products that were already out of stock, leading to user frustration and missed opportunities.</p>
         </div>
       </div>
 
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">The Strategy</p>
-        <h2 class="case-section__title">Real-time stock checks at the moment of email open, not at the moment of send.</h2>
+        <p class="case-section__eyebrow">Solutions implemented</p>
+        <h2 class="case-section__title">Real-Time Stock Check</h2>
         <div class="case-section__text">
-          <p><strong>Dynamic stock integration.</strong> I built a custom product feature using RetainIQ's dynamic widget functionality that checked Shopify stock levels in real time at the moment the subscriber opened the email, not when it was sent. If a product had sold out between send and open, the email creative would dynamically update to show an "Out of Stock" tag and push the subscriber toward similar products in the same category.</p>
-          <p><strong>Social proof and urgency layering.</strong> I paired the stock integration with live social proof elements showing remaining stock counts and product ratings. For a brand where scarcity is the selling point, showing "3 left in stock" next to a 4.8-star rating turned browsing intent into purchase urgency.</p>
+          <p>To address this issue, I devised a custom product feature built on RetainIQ's dynamic widget functionality. This feature ensured that the product creative in the email was updated in real-time to reflect the current stock status just before the user opened the email. If a product was out of stock, the creative would update to reflect an Out of Stock tag and push users to products in the same category.</p>
+        </div>
+
+        <!--
+          ==================== ANNOTATION TUNING ====================
+          Override any var here: style="--font-size: 22px; --arrow-rotate: 10deg"
+        -->
+        <div class="annotated-block" style="--font-size: 20px; --img-max-w: 600px; --arrow-rotate: 0deg; --arrow-flip: 1;">
+          <div class="annotated-block__header">
+            <span class="annotated-block__text">Product block dynamically updates based off live stock count from Shopify</span>
+            <svg class="annotated-block__arrow" viewBox="0 0 60 40">
+              <path d="M30,5 C30,15 30,25 30,32" marker-end="url(#ah-seel)"/>
+              <defs><marker id="ah-seel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#e8d5b5"/></marker></defs>
+            </svg>
+          </div>
+          <img src="assets/emails/seelbachs-3.png" alt="Before and after: product block with dynamic stock update" class="annotated-block__image" loading="lazy">
         </div>
       </div>
 
       <div class="case-section reveal">
-        <p class="case-section__eyebrow">The Results</p>
-        <h2 class="case-section__title">$59,548 in additional revenue. Two weeks.</h2>
+        <h2 class="case-section__title">Social Proof Integration</h2>
+        <div class="case-section__text">
+          <p>I combined this capability with social proof elements, showing remaining stock and product ratings to enhance user trust and create urgency.</p>
+        </div>
+        <img src="assets/emails/seelbachs-2.png" alt="Email product block with stock count and social proof" class="solution-img--stock" loading="lazy">
+      </div>
+
+      <div class="case-section reveal">
+        <p class="case-section__eyebrow">Results produced</p>
       </div>
 
       <div class="case-stats-row">
-        <div class="case-stat-card"><div class="case-stat-card__value">122%</div><div class="case-stat-card__label">Abandoned checkout conversion lift</div></div>
-        <div class="case-stat-card"><div class="case-stat-card__value">3,789%</div><div class="case-stat-card__label">Browse abandonment conversion lift</div></div>
-        <div class="case-stat-card"><div class="case-stat-card__value">34%</div><div class="case-stat-card__label">Add-to-cart abandonment conversion lift</div></div>
+        <div class="case-stat-card"><div class="case-stat-card__value">122%</div><div class="case-stat-card__label">Abandoned checkout conversion increase</div></div>
+        <div class="case-stat-card"><div class="case-stat-card__value">3,789%</div><div class="case-stat-card__label">Browse abandonment conversion increase</div></div>
+        <div class="case-stat-card"><div class="case-stat-card__value">34%</div><div class="case-stat-card__label">Added to cart conversion increase</div></div>
       </div>
 
-      <div class="case-section reveal" style="margin-top: 56px;">
-        <p class="case-section__eyebrow">Key Takeaway</p>
-        <h2 class="case-section__title">The email wasn't broken. The product data was stale.</h2>
-        <div class="case-section__text">
-          <p>Seelbach's abandonment flows had good open rates and solid copy. The problem was that the product being shown no longer existed by the time the subscriber opened the email. By shifting the stock check from send-time to open-time, we turned a frustration point into the highest-converting flow in the account. The browse abandonment conversion rate alone increased by 3,789%.</p>
-        </div>
+      <div class="case-section reveal" style="margin-top: 48px;">
+        <p class="case-section__eyebrow">What this meant to the brand</p>
       </div>
 
-      <div style="margin-top: 72px; padding-top: 36px; border-top: 1px solid var(--white-03);">
+      <div class="case-revenue-highlight">
+        <div class="case-revenue-highlight__label">Additional revenue in just 2 weeks</div>
+        <div class="case-revenue-highlight__value">$59,548.09</div>
+      </div>
+
+      <div style="margin-top: 56px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.04);">
         <a href="index.html#work" class="case-back">&larr; Back to all work</a>
       </div>
     </div>
   </div>
 
   <footer class="footer"><div class="container"><p>&copy; 2026 Hani Siraj</p></div></footer>
+
 </body>
 </html>

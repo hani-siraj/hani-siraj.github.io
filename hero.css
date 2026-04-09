@@ -149,12 +149,32 @@
 
 /* Mobile */
 @media (max-width: 834px) {
-  .orbit-email__card { width: 150px !important; height: 270px !important; }
+  .hero-cinema { min-height: auto; }
+  .hero-cinema__scene { min-height: 100vh; min-height: 100svh; }
+  .hero-cinema__world { align-items: flex-start; padding-top: 80px; }
+  .hero-cinema__orbit { top: 38%; }
+  .orbit-email__card { width: 130px !important; height: 234px !important; }
   .orbit-email[data-index="5"], .orbit-email[data-index="6"], .orbit-email[data-index="7"] { display: none; }
-  .hero-cinema__title { font-size: clamp(32px,8vw,52px); }
-  .orbit-email__exhaust { top: 110px; width: 44px; }
-  .orbit-email__exhaust::before { width: 18px; }
-  .orbit-email__exhaust::after { width: 40px; }
+  .hero-cinema__title { font-size: clamp(28px,7.5vw,44px); }
+  .hero-cinema__subtitle { font-size: 15px; margin-bottom: 24px; }
+  .hero-cinema__greeting { font-size: 15px; margin-bottom: 10px; }
+  .hero-cinema__text { padding: 0 16px; }
+  .hero-cinema__actions { gap: 10px; }
+  .orbit-email__exhaust { top: 95px; width: 36px; }
+  .orbit-email__exhaust::before { width: 14px; }
+  .orbit-email__exhaust::after { width: 32px; }
+  .hero-cinema__counter-value { font-size: clamp(22px,6vw,36px); }
+  .hero-cinema__counter-label { font-size: 13px; padding: 0 16px; }
+  .hero-cinema__scroll { bottom: 20px; }
+  .revenue-stat { padding: 60px 16px 40px; }
+  .revenue-stat__value { font-size: clamp(22px,6vw,36px); }
+  .revenue-stat__label { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+  .orbit-email__card { width: 110px !important; height: 198px !important; }
+  .hero-cinema__title { font-size: clamp(26px,7vw,38px); }
+  .orbit-email[data-index="4"] { display: none; }
 }
 
 /* GIF overlay on orbit email cards — static template + animated GIF on top */

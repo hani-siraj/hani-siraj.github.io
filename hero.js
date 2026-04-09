@@ -27,11 +27,11 @@ function initCinemaHero() {
 
   var isMobile     = window.innerWidth <= 834;
   var emailCount   = isMobile ? 5 : 8;
-  var LINE_SPACING = isMobile ? 170 : 240;
-  var LINEUP_COUNT = 4;  // only 4 cards line up and take off
+  var LINE_SPACING = isMobile ? 100 : 240;
+  var LINEUP_COUNT = isMobile ? 3 : 4;  // fewer cards line up on mobile
   var rotationOffset = 0;
   var orbitActive    = true;
-  var hasLaunchedOnce = false;
+  var hasLaunchedOnce = !!hasPlayed;
 
   // ===== 3D RING CONFIG =====
   var vh = window.innerHeight;
@@ -147,18 +147,32 @@ function initCinemaHero() {
     email._exhaust = ex;
   });
 
-  // ---- ENTRY ANIMATION ----
-  var eTl = gsap.timeline({ delay: 0.3 });
-  eTl.from('.hero-cinema__greeting', { y:15, opacity:0, duration:0.9, ease:'power3.out' })
-     .from('.hero-cinema__title', { y:20, opacity:0, duration:1.1, ease:'power3.out' }, '-=0.6')
-     .from('.hero-cinema__subtitle', { y:15, opacity:0, duration:0.9, ease:'power3.out' }, '-=0.7')
-     .from('.hero-cinema__actions', { y:10, opacity:0, duration:0.8, ease:'power3.out' }, '-=0.5')
-     .from('.hero-cinema__scroll', { opacity:0, duration:0.5 }, '-=0.3');
-  emails.forEach(function(email, i) {
-    if (i >= emailCount) return;
-    eTl.to(email, { opacity: 0.5, duration: 1.2, ease: 'power2.out' }, 0.5 + i * 0.1);
-  });
-  updateRing();
+  // ---- ENTRY ANIMATION (skip if returning from case study) ----
+  var hasPlayed = sessionStorage.getItem('heroAnimPlayed');
+
+  if (hasPlayed) {
+    // Returning from a case study — skip entrance, show orbit immediately
+    gsap.set(['.hero-cinema__greeting', '.hero-cinema__title', '.hero-cinema__subtitle', '.hero-cinema__actions'], { opacity: 1, y: 0 });
+    gsap.set('.hero-cinema__scroll', { opacity: 1 });
+    emails.forEach(function(email, i) {
+      if (i >= emailCount) return;
+      gsap.set(email, { opacity: 0.5 });
+    });
+    updateRing();
+  } else {
+    var eTl = gsap.timeline({ delay: 0.3 });
+    eTl.from('.hero-cinema__greeting', { y:15, opacity:0, duration:0.9, ease:'power3.out' })
+       .from('.hero-cinema__title', { y:20, opacity:0, duration:1.1, ease:'power3.out' }, '-=0.6')
+       .from('.hero-cinema__subtitle', { y:15, opacity:0, duration:0.9, ease:'power3.out' }, '-=0.7')
+       .from('.hero-cinema__actions', { y:10, opacity:0, duration:0.8, ease:'power3.out' }, '-=0.5')
+       .from('.hero-cinema__scroll', { opacity:0, duration:0.5 }, '-=0.3');
+    emails.forEach(function(email, i) {
+      if (i >= emailCount) return;
+      eTl.to(email, { opacity: 0.5, duration: 1.2, ease: 'power2.out' }, 0.5 + i * 0.1);
+    });
+    updateRing();
+    sessionStorage.setItem('heroAnimPlayed', '1');
+  }
 
   // ---- IDLE ROTATION ----
   var idleTween = gsap.to({ val: 0 }, {
