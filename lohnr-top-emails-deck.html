@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lohnr — Top Performing Non-Sale Emails</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --card: #111111;
+    --card-hover: #151515;
+    --border: #222;
+    --border-light: #2a2a2a;
+    --text: #e0e0e0;
+    --text-muted: #777;
+    --text-dim: #555;
+    --accent: #c9a96e;
+    --accent-dim: #8a7145;
+    --green: #4ade80;
+    --green-dim: #166534;
+    --red: #f87171;
+    --blue: #60a5fa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+
+  /* HERO HEADER */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 50px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #111 0%, var(--bg) 100%);
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: #fff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .hero .subtitle {
+    font-size: 1.05rem;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .hero .date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .hero .summary {
+    max-width: 720px;
+    margin: 24px auto 0;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 30px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-item .val {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-item .lbl {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  /* EMAIL GRID */
+  .email-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  @media (max-width: 1100px) {
+    .email-grid { grid-template-columns: 1fr; }
+  }
+
+  /* EMAIL CARD */
+  .email-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .email-card:hover {
+    border-color: var(--accent-dim);
+  }
+
+  /* Card Header */
+  .card-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-rank {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .card-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* Metrics Row */
+  .metrics-row {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .metric {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    border-right: 1px solid var(--border);
+  }
+  .metric:last-child { border-right: none; }
+  .metric .m-val {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green);
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric .m-val.gold { color: var(--accent); }
+  .metric .m-lbl {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 2px;
+  }
+
+  /* Phone Frame */
+  .phone-frame {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    background: #080808;
+  }
+  .phone-container {
+    width: 375px;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 0 3px #222, 0 0 0 6px #111, 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .phone-notch {
+    width: 120px;
+    height: 24px;
+    background: #222;
+    border-radius: 0 0 14px 14px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .phone-iframe {
+    width: 375px;
+    max-width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
+    margin-top: -8px;
+  }
+
+  /* Card Notes */
+  .card-notes {
+    padding: 20px 24px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .card-notes h4 {
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .card-notes p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .card-notes .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 10px;
+  }
+  .tag-image { background: var(--green-dim); color: var(--green); }
+  .tag-text { background: #1e1e3e; color: #818cf8; }
+
+  /* Structure list */
+  .structure-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  .structure-list li {
+    padding: 3px 0 3px 16px;
+    position: relative;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .structure-list li::before {
+    content: ">";
+    position: absolute;
+    left: 0;
+    color: var(--accent-dim);
+    font-weight: 700;
+  }
+
+  /* Full-width card (for #1) */
+  .email-card.full-width {
+    grid-column: 1 / -1;
+  }
+  .full-width .phone-frame {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .full-width .card-content-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0;
+  }
+  @media (max-width: 900px) {
+    .full-width .card-content-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Footer */
+  .page-footer {
+    text-align: center;
+    padding: 40px 20px 60px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  .page-footer p {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+  .page-footer a {
+    color: var(--accent-dim);
+    text-decoration: none;
+  }
+
+  /* Key Patterns Section */
+  .patterns-section {
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+  .patterns-section h2 {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+  .patterns-section h2 span { color: var(--accent); }
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .pattern-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .pattern-item h4 {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .pattern-item p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .pattern-item .evidence {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    border-left: 2px solid var(--accent-dim);
+    padding-left: 10px;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Section divider */
+  .section-divider {
+    text-align: center;
+    padding: 30px 0;
+    margin: 10px 0;
+  }
+  .section-divider h2 {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .section-divider h2 span { color: var(--accent); font-weight: 400; }
+  .section-divider p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Lohnr</h1>
+  <div class="subtitle">Top Performing Non-Sale Emails</div>
+  <div class="date">Analysis: Aug 2025 - Apr 2026 / 20 non-sale emails / 9 April 2026</div>
+  <p class="summary">
+    A visual deck of Lohnr's best non-promotional email campaigns, ranked by clicks and revenue. Each email is rendered at mobile width (375px) to show how subscribers actually see them. Structural notes explain what made each one work.
+  </p>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><span class="val">0.64%</span><span class="lbl">Avg Click Rate (Top 8)</span></div>
+  <div class="stat-item"><span class="val">$1,001</span><span class="lbl">Avg Revenue (Top 8)</span></div>
+  <div class="stat-item"><span class="val">371</span><span class="lbl">Avg Clicks (Top 8)</span></div>
+  <div class="stat-item"><span class="val">2-3</span><span class="lbl">Products Per Winner</span></div>
+  <div class="stat-item"><span class="val">100%</span><span class="lbl">Images Linked in Winners</span></div>
+</div>
+
+<div class="container">
+
+<!-- SECTION: TOP BY CLICKS -->
+<div class="section-divider">
+  <h2>Ranked by <span>Clicks</span></h2>
+  <p>The emails that drove the most subscriber engagement</p>
+</div>
+
+<div class="email-grid">
+
+<!-- #1: V-Day Self-Gift Guide -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#1 by Clicks / Most Clicked Non-Sale Email</div>
+    <div class="card-title">V-Day Self-Gift Guide</div>
+    <div class="card-date">8 February 2026 / 15,374 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">479</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$774</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val">0.67%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val">1.01%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/01-vday-self-gift-guide.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>The "goes with" styling context is the key differentiator. Instead of showing products alone, each item has a pairing suggestion ("goes with: slides and oversized sunglasses") that helps the customer visualise wearing it. Conversational hero sets warm tone before any product appears.</p>
+    <ul class="structure-list">
+      <li>8 content images, ALL linked (7 to shop)</li>
+      <li>3 unique products with "goes with" styling pairs</li>
+      <li>Zero live text (100% image-based)</li>
+      <li>Conversational alt text throughout</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #2: Styling Tips -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#2 by Clicks</div>
+    <div class="card-title">Styling Tips + Your LOHNR Rotation</div>
+    <div class="card-date">3 February 2026 / 13,318 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">466</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$882</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val">0.68%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val">0.96%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/02-styling-tips-rotation.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>"Education first, products second" is the winning formula. The first half teaches styling tips (rotate, layer, simplify, mix). Only after establishing value does it transition to "now lets add to your rotation" with product picks. The casual "mmhm..." hero creates intimacy.</p>
+    <ul class="structure-list">
+      <li>11 content images, ALL linked to shop</li>
+      <li>3 unique products after styling education</li>
+      <li>Transition image between value and product sections</li>
+      <li>Zero live text</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #3: If I Were Going to... -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#3 by Clicks / Highest CTR Among Top 3</div>
+    <div class="card-title">If I Were Going to...</div>
+    <div class="card-date">1 February 2026 / 13,428 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">461</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$890</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val">0.71%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val">0.98%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/03-if-i-were-going-to.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>The campaign name itself is an incomplete thought that demands resolution. Combined with "Before your next headout", it creates a scenario-based frame: "what would I wear if I were going out?" Aspirational rather than transactional. Dual "Explore Our Collection" bookend at top and bottom ensures every reader sees a CTA.</p>
+    <ul class="structure-list">
+      <li>7 content images, ALL linked</li>
+      <li>3 named products + 4 collection links</li>
+      <li>Dual CTA bookend (top and bottom)</li>
+      <li>Zero live text</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #4: Uniform Chain -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#4 by Clicks / Single-Product Standout</div>
+    <div class="card-title">Meet Effortless Style: The Uniform Chain</div>
+    <div class="card-date">5 February 2026 / 13,207 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">394</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$352</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val">0.66%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val">0.93%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/06-uniform-chain.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>Editorial copy on images ("some pieces earn their place in your wardrobe quietly") reads like a magazine feature. 3 benefit callouts (complete look, comfort, built for repeats) address the "why buy" without being salesy. 7 out of 9 links go to the same product, creating a funnel effect.</p>
+    <ul class="structure-list">
+      <li>8 content images, ALL linked, 2 products</li>
+      <li>7 of 9 links point to same product (funnel effect)</li>
+      <li>Editorial storytelling with 3 benefit callouts</li>
+      <li>1 cross-sell (Loop Wrap) without diluting focus</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #5: Last-Minute Valentine's -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#5 by Clicks</div>
+    <div class="card-title">Last-Minute Valentine's</div>
+    <div class="card-date">10 February 2026 / 15,251 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">311</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$572</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val">0.59%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val">0.92%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/05-last-minute-valentines.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>Urgency-driven content email that leveraged the Valentine's Day deadline without being a sale email. Scenario framing ("last minute" implies a problem to solve) combined with the proven image-based structure of the wider Valentine's series.</p>
+    <ul class="structure-list">
+      <li>Part of the Valentine's series (consistent format)</li>
+      <li>Urgency framing without discount</li>
+      <li>Image-based, all images linked</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #6: Valentine's Made Easy -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#6 by Clicks / #1 by Revenue</div>
+    <div class="card-title">Valentine's Day, Made Easy</div>
+    <div class="card-date">12 February 2026 / 15,079 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">300</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$1,585</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val">0.56%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val">0.88%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/04-valentines-made-easy.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>Highest revenue of any non-sale email ($1,585). The conversational hero ("so...what are you wearing this valentine's?") creates personal relevance. The Elena-style "quick valentine's note" adds founder voice within the image format. Converted at $93/order (vs typical $50-60), suggesting it drove multi-item or higher-value purchases.</p>
+    <ul class="structure-list">
+      <li>5 content images, ALL linked, 3 unique products</li>
+      <li>$93 average order value (highest in dataset)</li>
+      <li>Elena founder note within image-based format</li>
+      <li>17 orders from 300 clicks (5.7% click-to-order)</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+</div><!-- end email-grid -->
+
+<!-- SECTION: HIGH REVENUE, LOW CLICKS -->
+<div class="section-divider" style="margin-top:50px;">
+  <h2>Revenue Anomalies <span>/ Different Mechanism</span></h2>
+  <p>These emails generated strong revenue through brand trust, not direct clicks</p>
+</div>
+
+<div class="email-grid">
+
+<!-- #7: Spring LOHNR Refresh -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#2 by Revenue / $1,541 from 37 clicks</div>
+    <div class="card-title">Spring LOHNR Refresh</div>
+    <div class="card-date">18 February 2026 / 15,055 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val" style="color:var(--red)">37</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$1,541</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val" style="color:var(--text-muted)">0.21%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val" style="color:var(--text-muted)">0.32%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/07-spring-lohnr-refresh.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked (differently)</h4>
+    <p>Only 37 clicks but $1,541 in attributed revenue. Generic brand-speak on images ("Spring, the LOHNR Way") drove less engagement than conversational alt text, but the collection exposure still triggered purchases through separate browsing sessions. Proves brand presence drives revenue even when click metrics look weak.</p>
+    <ul class="structure-list">
+      <li>$41.65 revenue per click (vs $1.62 avg for image emails)</li>
+      <li>18 orders from 37 clicks (impossible without indirect attribution)</li>
+      <li>Anti-pattern: generic framing instead of conversational hooks</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #8: Care Tips -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">#3 by Revenue / Trust-Building Anomaly</div>
+    <div class="card-title">Care Tips (One-Time Buyers)</div>
+    <div class="card-date">14 January 2026 / 18,753 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val" style="color:var(--red)">24</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$1,440</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val" style="color:var(--text-muted)">0.10%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val" style="color:var(--text-muted)">0.20%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/10-care-tips.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked (differently)</h4>
+    <p>Only 24 clicks yet $1,440 in revenue. This is a trust-building email that converts through brand affinity, not direct clicks. The care guide (washing, drying, storage tips) reinforced purchase decisions for one-time buyers and triggered separate browsing sessions. Highest text density of any Lohnr email (~350 words).</p>
+    <ul class="structure-list">
+      <li>HTML text format (not image-based)</li>
+      <li>Structured care guide with checkmarks/crossmarks</li>
+      <li>Customer testimonials (Rachel K., Amanda T.)</li>
+      <li>Single CTA: "Build Your Rotation"</li>
+    </ul>
+    <span class="tag tag-text">HTML Text</span>
+  </div>
+</div>
+
+<!-- #9: Game Day Set -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">Revenue Performer / Single-Product, Low Clicks</div>
+    <div class="card-title">Game Day Set: Your New Go-To</div>
+    <div class="card-date">16 February 2026 / 15,148 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val" style="color:var(--red)">23</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$926</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val" style="color:var(--text-muted)">0.12%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val" style="color:var(--text-muted)">0.18%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/08-game-day-set.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Anti-pattern: product-first, no context</h4>
+    <p>Only 1 product with no occasion framing, no styling tips, no "goes with" context. Compare to the Uniform Chain email (394 clicks) which also featured a single product but wrapped it in editorial storytelling. The Game Day email said "here's a product" while the Uniform Chain said "here's why this earns its place in your wardrobe."</p>
+    <ul class="structure-list">
+      <li>Single product, no editorial framing</li>
+      <li>Revenue came through indirect attribution ($926)</li>
+      <li>Anti-pattern for click rate, but product interest drove purchases</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+<!-- #10: Roam Fleece -->
+<div class="email-card">
+  <div class="card-header">
+    <div class="card-rank">Highest Click Rate / 0.88% CTR</div>
+    <div class="card-title">Roam Fleece (Targeted Segment)</div>
+    <div class="card-date">19 January 2026 / 4,063 recipients</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><span class="m-val">85</span><span class="m-lbl">Clicks</span></div>
+    <div class="metric"><span class="m-val gold">$390</span><span class="m-lbl">Revenue</span></div>
+    <div class="metric"><span class="m-val" style="color: #fbbf24">0.88%</span><span class="m-lbl">CTR</span></div>
+    <div class="metric"><span class="m-val" style="color: #fbbf24">1.49%</span><span class="m-lbl">CTOR</span></div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-container">
+      <div class="phone-notch"></div>
+      <iframe class="phone-iframe" src="lohnr-emails/09-roam-fleece.html" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="card-notes">
+    <h4>Why it worked</h4>
+    <p>Smallest audience (4,063), single product, every link goes to the same place. This was a targeted send to a segment already interested in the Roam Fleece. Segment size and targeting matter more than creative for click rate. A focused email to a relevant audience will always outperform a broad send.</p>
+    <ul class="structure-list">
+      <li>6 content images, no alt text, ALL linked</li>
+      <li>4 links to /products/roam-fleece</li>
+      <li>Highest CTOR of any email (1.49%)</li>
+      <li>Targeted segment = highest click rate</li>
+    </ul>
+    <span class="tag tag-image">100% Image</span>
+  </div>
+</div>
+
+</div><!-- end email-grid -->
+
+<!-- KEY PATTERNS -->
+<div class="patterns-section">
+  <h2>Key Patterns <span>/ What Winners Share</span></h2>
+  <div class="pattern-grid">
+    <div class="pattern-item">
+      <h4>Every Image is Clickable</h4>
+      <p>In ALL top image emails, 100% of content images are linked. Zero decorative images. Every pixel is a click target, maximising clickable surface area.</p>
+      <div class="evidence">Top 6 image emails: 100% images linked. Avg 7.3 shop links per email.</div>
+    </div>
+    <div class="pattern-item">
+      <h4>2-3 Products, No More</h4>
+      <p>The sweet spot is 2-3 unique products. Single-product emails averaged 0.39% CTR. 3-product emails averaged 0.66% CTR. Too few = insufficient variety, too many = decision paralysis.</p>
+      <div class="evidence">Top 3 by clicks all featured exactly 3 products.</div>
+    </div>
+    <div class="pattern-item">
+      <h4>Conversational Alt Text</h4>
+      <p>Winners use lowercase, conversational image text: "mmhm...what's next?", "so...what are you wearing?". Emails with rich alt text averaged 0.65% CTR vs 0.32% for empty alt text.</p>
+      <div class="evidence">Rich alt text = 2x the click rate of empty alt text.</div>
+    </div>
+    <div class="pattern-item">
+      <h4>Education Before Product</h4>
+      <p>Highest-click emails lead with value (styling tips, occasion framing) before introducing products. Hook, educate/inspire, then "here's what to buy".</p>
+      <div class="evidence">Styling Tips (educate first): 466 clicks. Game Day (product first): 23 clicks.</div>
+    </div>
+    <div class="pattern-item">
+      <h4>Scenario-Based Framing</h4>
+      <p>Frame products around a scenario: "what are you wearing this valentine's?", "before your next headout". Aspirational storytelling, not product display.</p>
+      <div class="evidence">Scenario emails avg $813 revenue vs display emails avg $579.</div>
+    </div>
+    <div class="pattern-item">
+      <h4>"Goes With" Styling Context</h4>
+      <p>The highest-click email added "goes with: slides and oversized sunglasses" beneath each product. This micro-detail adds ~50% more clicks than the same template without it.</p>
+      <div class="evidence">V-Day Self-Gift Guide: 479 clicks. Same series without "goes with": 300-311.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <p>Lohnr Email Performance Deck / Webprofits / 9 April 2026</p>
+  <p style="margin-top:6px"><a href="lohnr-emails/">View individual email templates</a></p>
+</div>
+
+</body>
+</html>
