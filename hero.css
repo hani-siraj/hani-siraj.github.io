@@ -192,3 +192,17 @@
   pointer-events: none;
   z-index: 1;
 }
+
+/* Video overlays (replacing GIF img elements) */
+.orbit-email__card video.orbit-email__gif-overlay,
+.email-showcase__item video.email-showcase__gif-overlay {
+  position: absolute;
+  left: 0;
+  top: var(--gif-top, 0%);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: top center;
+  pointer-events: none;
+  z-index: 1;
+}

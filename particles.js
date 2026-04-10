@@ -10,10 +10,10 @@
 
   const ctx = canvas.getContext('2d');
   let w, h, stars = [], blueStars = [], shootingStars = [];
-  const DUST_COUNT = 500;
-  const BLUE_STAR_COUNT = 12;
-  const HERO_BLUE_COUNT = 10;
-  const HERO_DUST_COUNT = 350;
+  const DUST_COUNT = 200;
+  const BLUE_STAR_COUNT = 6;
+  const HERO_BLUE_COUNT = 5;
+  const HERO_DUST_COUNT = 150;
 
   function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 

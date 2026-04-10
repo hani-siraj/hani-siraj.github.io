@@ -31,6 +31,7 @@ function initCinemaHero() {
   var LINEUP_COUNT = isMobile ? 3 : 4;  // fewer cards line up on mobile
   var rotationOffset = 0;
   var orbitActive    = true;
+  var hasPlayed = sessionStorage.getItem('heroAnimPlayed');
   var hasLaunchedOnce = !!hasPlayed;
 
   // ===== 3D RING CONFIG =====
@@ -148,11 +149,9 @@ function initCinemaHero() {
   });
 
   // ---- ENTRY ANIMATION (skip if returning from case study) ----
-  var hasPlayed = sessionStorage.getItem('heroAnimPlayed');
-
   if (hasPlayed) {
     // Returning from a case study — skip entrance, show orbit immediately
-    gsap.set(['.hero-cinema__greeting', '.hero-cinema__title', '.hero-cinema__subtitle', '.hero-cinema__actions'], { opacity: 1, y: 0 });
+    gsap.set(['.hero-cinema__greeting', '.hero-cinema__title', '.hero-cinema__actions'], { opacity: 1, y: 0 });
     gsap.set('.hero-cinema__scroll', { opacity: 1 });
     emails.forEach(function(email, i) {
       if (i >= emailCount) return;
@@ -163,7 +162,6 @@ function initCinemaHero() {
     var eTl = gsap.timeline({ delay: 0.3 });
     eTl.from('.hero-cinema__greeting', { y:15, opacity:0, duration:0.9, ease:'power3.out' })
        .from('.hero-cinema__title', { y:20, opacity:0, duration:1.1, ease:'power3.out' }, '-=0.6')
-       .from('.hero-cinema__subtitle', { y:15, opacity:0, duration:0.9, ease:'power3.out' }, '-=0.7')
        .from('.hero-cinema__actions', { y:10, opacity:0, duration:0.8, ease:'power3.out' }, '-=0.5')
        .from('.hero-cinema__scroll', { opacity:0, duration:0.5 }, '-=0.3');
     emails.forEach(function(email, i) {
@@ -184,6 +182,9 @@ function initCinemaHero() {
   function unlockScroll() { document.body.style.overflow = ''; document.body.style.touchAction = ''; }
 
   var lineStartX = -((LINEUP_COUNT - 1) * LINE_SPACING) / 2;
+
+  // On return from case study: just orbit, no scroll animation
+  if (hasPlayed) return;
 
   // ---- SCROLL TIMELINE ----
   var scrollTl = gsap.timeline({
