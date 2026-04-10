@@ -152,6 +152,7 @@
   .hero-cinema { min-height: auto; }
   .hero-cinema__scene { min-height: 100vh; min-height: 100svh; }
   .hero-cinema__world { align-items: flex-start; padding-top: 80px; }
+  .hero-cinema__world::before { width: 500px; height: 500px; }
   .hero-cinema__orbit { top: 38%; }
   .orbit-email__card { width: 130px !important; height: 234px !important; }
   .orbit-email[data-index="5"], .orbit-email[data-index="6"], .orbit-email[data-index="7"] { display: none; }

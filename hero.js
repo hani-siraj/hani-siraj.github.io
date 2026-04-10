@@ -232,6 +232,24 @@ function initCinemaHero() {
     }
   });
 
+
+  // ---- SKIP ANIMATION (called by CTA clicks) ----
+  window.skipHeroAnimation = function() {
+    if (scrollTl.scrollTrigger) scrollTl.scrollTrigger.kill(true);
+    idleTween.pause();
+    orbitActive = false;
+    hasLaunchedOnce = true;
+    gsap.set(textEl, { opacity: 1, y: 0, clearProps: 'all' });
+    gsap.set(scrollInd, { opacity: 0 });
+    if (counterEl) gsap.set(counterEl, { opacity: 0 });
+    emails.forEach(function(e, i) {
+      if (i >= emailCount) return;
+      gsap.set(e, { clearProps: 'all', opacity: 0 });
+      if (e._exhaust) gsap.set(e._exhaust, { height: 0, opacity: 0 });
+    });
+    window.skipHeroAnimation = null;
+  };
+
   // ---- TAKEOFF (preserved) ----
   var blastPaths = [
     { x: -1400, y: -700, rot: -30 }, { x: 1500, y: -500, rot: 25 },

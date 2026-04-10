@@ -25,6 +25,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 body {
@@ -783,23 +784,64 @@ img { max-width: 100%; display: block; }
   .case-section__title { font-size: 22px; }
   .case-section__text { font-size: 15px; }
 
+  /* Section spacing */
+  .case-studies { padding: 60px 0; }
+  .about { padding: 60px 0; }
+  .contact { padding: 60px 0; }
+
   /* Email showcase section */
   .email-showcase { padding: 60px 0; }
 
   /* Contact */
   .contact__title { font-size: 28px; }
+  .contact__subtitle { font-size: 15px; margin-bottom: 24px; }
+
+  /* Contain ambient light orbs */
+  .space::before { width: 400px; height: 400px; }
+  .space--tr::before { top: -200px; right: -150px; }
+  .space--bl::before { bottom: -200px; left: -150px; }
+  .space--c::before { top: -150px; }
+
+  /* Logo marquee */
+  .logo-item { width: 90px; height: 28px; }
+  .clients__marquee { gap: 32px; }
 }
 
 @media (max-width: 480px) {
   .other-cases { grid-template-columns: 1fr; }
   .contact__links { flex-direction: column; align-items: center; }
   .hero__actions { flex-direction: column; align-items: flex-start; }
+
+  /* Tighter section spacing */
+  .case-studies { padding: 40px 0; }
+  .about { padding: 40px 0; }
+  .contact { padding: 40px 0; }
+  .email-showcase { padding: 40px 0; }
+
+  /* Cards */
+  .case-card__metrics { gap: 12px; }
+  .case-card__metric-value { font-size: 22px; }
+
+  /* About */
+  .about__photo-card { width: 160px; }
+  .about__name { font-size: 24px; }
+  .about__text { font-size: 14px; }
+  .about__links { flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+  /* Contact */
+  .contact__title { font-size: 24px; }
+
+  /* Case study pages */
   .case-hero { padding: 80px 16px 36px; min-height: auto; }
   .case-hero__title { font-size: clamp(22px,5.5vw,30px); }
   .case-hero__metrics { flex-direction: column; gap: 12px; text-align: center; }
   .case-stats-row { gap: 10px; }
   .case-stat-card { padding: 20px 16px; }
   .case-stat-card__value { font-size: 22px; }
+
+  /* Buttons */
+  .btn-primary { font-size: 15px; padding: 6px 18px; }
+  .btn-secondary { font-size: 13px; padding: 6px 18px; }
 }
 
 /* ============================================
