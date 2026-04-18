@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lohnr · F_FIRST-TIME-BUYER · Flow Map</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif; background: #FAFAF7; color: #1a1a1a; }
+  .header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid #E5E7EB; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .header h1 { font-size: 15px; margin: 0; letter-spacing: -0.01em; font-weight: 700; }
+  .header h1 code { background: #F3F4F6; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .header .brand { color: #6B7280; font-size: 12px; margin-left: 8px; }
+  .header .meta { display: flex; gap: 16px; font-size: 12px; color: #6B7280; }
+  .header .meta strong { color: #111; font-weight: 600; }
+
+  .legend { background: #fff; border-bottom: 1px solid #E5E7EB; padding: 10px 28px; font-size: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .legend-item { display: flex; gap: 8px; align-items: center; }
+  .legend-node { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+
+  .canvas { padding: 30px 20px 80px; overflow-x: auto; background: #FAFAF7; }
+  .board { position: relative; min-width: 1700px; margin: 0 auto; }
+
+  /* NODE STYLES — FigJam aesthetic */
+  .node { position: absolute; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 12px; line-height: 1.35; box-shadow: 0 2px 5px rgba(0,0,0,0.06); transition: transform 0.15s, box-shadow 0.15s; }
+  .node:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(0,0,0,0.1); z-index: 50; }
+
+  .node-trigger {
+    background: #CFF5D1; border: 2px solid #4CAF50; color: #1B5E20;
+  }
+  .node-compute {
+    background: #fff; border: 2px solid #E5E7EB; color: #1a1a1a;
+  }
+  .node-delay {
+    background: #DBEAFE; border: 2px solid #60A5FA; color: #1E3A8A;
+  }
+  .node-email {
+    background: #E9D5FF; border: 2px solid #A855F7; color: #581C87;
+  }
+  .node-email-plain {
+    background: #FDE68A; border: 2px solid #F59E0B; color: #78350F;
+  }
+
+  .node-icon { width: 32px; height: 32px; margin-bottom: 6px; opacity: 0.9; }
+  .node-label { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+  .node-title { font-size: 13px; font-weight: 700; line-height: 1.25; }
+  .node-subtitle { font-size: 10px; font-weight: 500; opacity: 0.75; margin-top: 4px; font-family: Menlo, monospace; }
+
+  /* CONTENT BOX (gray box to the right of emails) */
+  .content-box {
+    position: absolute;
+    background: #F3F4F6;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #111;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+  }
+  .content-box .heading { font-weight: 700; margin-bottom: 6px; font-size: 11px; }
+  .content-box ul { margin: 0; padding-left: 16px; }
+  .content-box li { margin: 3px 0; }
+  .content-box code { background: #E5E7EB; padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+
+  /* PROFILE FILTERS text block (top-left) */
+  .profile-filters { position: absolute; font-size: 13px; line-height: 1.6; }
+  .profile-filters .heading { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  .profile-filters ul { margin: 0; padding-left: 20px; }
+  .profile-filters li { margin: 2px 0; }
+
+  /* DAY BAND (left column of day labels) */
+  .day-band { position: absolute; left: 40px; width: 80px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #E5E7EB; border-radius: 20px; padding: 8px 0; font-size: 11px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* BRANCH HEADER CHIP */
+  .branch-chip { position: absolute; padding: 8px 16px; border-radius: 20px; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; text-align: center; }
+
+  /* Yes/No/Branch connector labels */
+  .connector-label { position: absolute; background: #fff; border: 1px solid #D1D5DB; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; color: #374151; }
+
+  .dashed-line { stroke-dasharray: 6, 4; }
+
+  .footer { padding: 18px 28px; background: #fff; border-top: 1px solid #E5E7EB; font-size: 12px; color: #6B7280; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .footer code { background: #F3F4F6; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
+
+  /* Implementation notes block */
+  .impl-notes { margin: 60px 40px 0; padding: 24px 28px; background: #FFFBEB; border: 2px dashed #FBBF24; border-radius: 12px; font-size: 13px; line-height: 1.6; color: #78350F; }
+  .impl-notes .heading { font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; margin-bottom: 10px; opacity: 0.8; }
+  .impl-notes ul { margin: 0; padding-left: 22px; }
+  .impl-notes li { margin: 4px 0; }
+  .impl-notes code { background: #FEF3C7; padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Lohnr · <code>F_FIRST-TIME-BUYER</code> · Flow Architecture Map</h1>
+    <span class="brand">for Klaviyo implementation</span>
+  </div>
+  <div class="meta">
+    <span><strong>4</strong> branches</span>
+    <span><strong>20</strong> emails</span>
+    <span><strong>5</strong> positions</span>
+    <span><strong>30-day</strong> window</span>
+    <span>Built 2026-04-18</span>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-node" style="background: #CFF5D1; border: 2px solid #4CAF50;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B5E20" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+    Trigger
+  </div>
+  <div class="legend-item">
+    <div class="legend-node" style="background: #fff; border: 2px solid #E5E7EB;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></div>
+    Filter / Split (Compute)
+  </div>
+  <div class="legend-item">
+    <div class="legend-node" style="background: #DBEAFE; border: 2px solid #60A5FA;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+    Time Delay
+  </div>
+  <div class="legend-item">
+    <div class="legend-node" style="background: #E9D5FF; border: 2px solid #A855F7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></div>
+    Email (designed)
+  </div>
+  <div class="legend-item">
+    <div class="legend-node" style="background: #FDE68A; border: 2px solid #F59E0B;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#78350F" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 8h16M8 4v16"/></svg></div>
+    Email (plain text)
+  </div>
+</div>
+
+<div class="canvas">
+<div class="board" style="height: 2450px;">
+
+  <!-- SVG CONNECTORS -->
+  <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 2450px; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#9CA3AF"/>
+      </marker>
+      <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#4CAF50"/>
+      </marker>
+    </defs>
+
+    <!-- Trigger (540,200) → Delay (540,340) -->
+    <line x1="680" y1="330" x2="680" y2="390" stroke="#4CAF50" stroke-width="2.5" marker-end="url(#arrg)"/>
+
+    <!-- Delay (540,390) → Split (540,500) -->
+    <line x1="680" y1="480" x2="680" y2="530" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Split → 4 branch paths (horizontal distribution + down) -->
+    <line x1="680" y1="640" x2="680" y2="680" stroke="#9CA3AF" stroke-width="2"/>
+    <line x1="270" y1="680" x2="1470" y2="680" stroke="#9CA3AF" stroke-width="2"/>
+    <line x1="270" y1="680" x2="270" y2="780" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="680" x2="670" y2="780" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="680" x2="1070" y2="780" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="680" x2="1470" y2="780" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Each branch: node to delay to node — connectors between positions at x=270, 670, 1070, 1470 -->
+    <!-- Between E1 and Delay-5d (y: 880 → 950) -->
+    <line x1="270" y1="880" x2="270" y2="940" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="880" x2="670" y2="940" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="880" x2="1070" y2="940" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="880" x2="1470" y2="940" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- Delay-5d to E2 (y: 1010 → 1080) -->
+    <line x1="270" y1="1020" x2="270" y2="1080" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1020" x2="670" y2="1080" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1020" x2="1070" y2="1080" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1020" x2="1470" y2="1080" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- E2 to Delay-9d -->
+    <line x1="270" y1="1180" x2="270" y2="1240" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1180" x2="670" y2="1240" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1180" x2="1070" y2="1240" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1180" x2="1470" y2="1240" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- Delay-9d to E3 -->
+    <line x1="270" y1="1320" x2="270" y2="1380" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1320" x2="670" y2="1380" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1320" x2="1070" y2="1380" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1320" x2="1470" y2="1380" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- E3 to Delay-7d -->
+    <line x1="270" y1="1480" x2="270" y2="1540" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1480" x2="670" y2="1540" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1480" x2="1070" y2="1540" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1480" x2="1470" y2="1540" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- Delay-7d to E4 -->
+    <line x1="270" y1="1620" x2="270" y2="1680" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1620" x2="670" y2="1680" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1620" x2="1070" y2="1680" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1620" x2="1470" y2="1680" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- E4 to Delay-7d (second) -->
+    <line x1="270" y1="1780" x2="270" y2="1840" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1780" x2="670" y2="1840" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1780" x2="1070" y2="1840" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1780" x2="1470" y2="1840" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- Delay-7d to E5 -->
+    <line x1="270" y1="1920" x2="270" y2="1980" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="670" y1="1920" x2="670" y2="1980" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1070" y1="1920" x2="1070" y2="1980" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <line x1="1470" y1="1920" x2="1470" y2="1980" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Dashed connectors from emails to their content boxes (right side) — only draw for the rightmost branch (Generic) to avoid clutter -->
+    <!-- E1 Generic content link -->
+    <line x1="1540" y1="830" x2="1600" y2="830" stroke="#9CA3AF" stroke-width="1.5" class="dashed-line"/>
+    <line x1="1540" y1="1130" x2="1600" y2="1130" stroke="#9CA3AF" stroke-width="1.5" class="dashed-line"/>
+    <line x1="1540" y1="1430" x2="1600" y2="1430" stroke="#9CA3AF" stroke-width="1.5" class="dashed-line"/>
+    <line x1="1540" y1="1730" x2="1600" y2="1730" stroke="#9CA3AF" stroke-width="1.5" class="dashed-line"/>
+    <line x1="1540" y1="2030" x2="1600" y2="2030" stroke="#9CA3AF" stroke-width="1.5" class="dashed-line"/>
+  </svg>
+
+
+
+  <!-- TRIGGER NODE -->
+  <div class="node node-trigger" style="top: 200px; left: 590px; width: 180px; height: 130px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#1B5E20" stroke-width="1.8">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+    <div class="node-label">Trigger</div>
+    <div class="node-title">Placed Order</div>
+  </div>
+
+  <!-- INITIAL DELAY -->
+  <div class="node node-delay" style="top: 390px; left: 605px; width: 150px; height: 90px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">45 minutes</div>
+    <div class="node-subtitle">settle buffer</div>
+  </div>
+
+  <!-- ENTRY SPLIT -->
+  <div class="node node-compute" style="top: 530px; left: 520px; width: 320px; height: 110px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.8" style="width: 24px; height: 24px;"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+    <div class="node-title">Conditional Split — on ordered item</div>
+    <div class="node-subtitle" style="margin-top: 6px;">Solace → Solene → Game Day → else</div>
+  </div>
+
+  <!-- BRANCH HEADER CHIPS (below split) -->
+  <div class="branch-chip" style="top: 720px; left: 210px; width: 120px; background: #8B5A2B;">Solace</div>
+  <div class="branch-chip" style="top: 720px; left: 610px; width: 120px; background: #5B6E8C;">Solene</div>
+  <div class="branch-chip" style="top: 720px; left: 1010px; width: 120px; background: #2E7D4F;">Game Day</div>
+  <div class="branch-chip" style="top: 720px; left: 1410px; width: 120px; background: #6B7280;">Generic</div>
+
+  <!-- DAY BAND LABELS (left column, hidden in scroll view — use inline day-chips near each row) -->
+  <!-- E1 row Day 0 -->
+  <!-- E1 nodes for each branch -->
+  <div class="node node-email" style="top: 780px; left: 190px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 0</div>
+    <div class="node-title">Welcome</div>
+  </div>
+  <div class="node node-email" style="top: 780px; left: 590px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 0</div>
+    <div class="node-title">Welcome</div>
+  </div>
+  <div class="node node-email" style="top: 780px; left: 990px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 0</div>
+    <div class="node-title">Welcome</div>
+  </div>
+  <div class="node node-email" style="top: 780px; left: 1390px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 0</div>
+    <div class="node-title">Welcome</div>
+  </div>
+
+  <!-- E1 content box (to the right of Generic) -->
+  <div class="content-box" style="top: 780px; left: 1600px; width: 290px;">
+    <div class="heading">E1 contains (where appropriate)</div>
+    <ul>
+      <li>Subject: "You picked well, {name}"</li>
+      <li>Hero: "Welcome in." · Track Your Order CTA</li>
+      <li>Founder intro block (Elena + portrait)</li>
+      <li>Social proof line (product-specific)</li>
+      <li>UGC review block (3 quotes)</li>
+      <li>Stack-up nudge (2-3 colorways line)</li>
+      <li>Generic branch adds: dynamic order product table from <code>event.Items</code></li>
+    </ul>
+  </div>
+
+  <!-- DELAY 5d -->
+  <div class="node node-delay" style="top: 940px; left: 220px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">5 days</div>
+  </div>
+  <div class="node node-delay" style="top: 940px; left: 620px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">5 days</div>
+  </div>
+  <div class="node node-delay" style="top: 940px; left: 1020px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">5 days</div>
+  </div>
+  <div class="node node-delay" style="top: 940px; left: 1420px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">5 days</div>
+  </div>
+
+  <!-- E2 row (Day 5) -->
+  <div class="node node-email" style="top: 1080px; left: 190px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 5</div>
+    <div class="node-title">Style + fabric</div>
+  </div>
+  <div class="node node-email" style="top: 1080px; left: 590px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 5</div>
+    <div class="node-title">Style + fabric</div>
+  </div>
+  <div class="node node-email" style="top: 1080px; left: 990px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 5</div>
+    <div class="node-title">Style + fabric</div>
+  </div>
+  <div class="node node-email" style="top: 1080px; left: 1390px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 5</div>
+    <div class="node-title">Style + fabric</div>
+  </div>
+  <div class="content-box" style="top: 1080px; left: 1600px; width: 290px;">
+    <div class="heading">E2 contains (where appropriate)</div>
+    <ul>
+      <li>Subject: "How to style your {product}"</li>
+      <li>Subheadline: "Now that you have your {product}, here's how our customers are styling it."</li>
+      <li>Fabric story block (product-specific)</li>
+      <li>Care tips block (3 icon rows)</li>
+      <li>UGC styling gallery: 3 real customer photos + "recreate the look" captions</li>
+      <li>Companion-piece upsell block</li>
+    </ul>
+  </div>
+
+  <!-- DELAY 9d -->
+  <div class="node node-delay" style="top: 1240px; left: 220px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">9 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1240px; left: 620px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">9 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1240px; left: 1020px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">9 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1240px; left: 1420px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">9 days</div>
+  </div>
+
+  <!-- E3 row (Day 14) -->
+  <div class="node node-email" style="top: 1380px; left: 190px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 14</div>
+    <div class="node-title">Cross-sell</div>
+  </div>
+  <div class="node node-email" style="top: 1380px; left: 590px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 14</div>
+    <div class="node-title">Cross-sell</div>
+  </div>
+  <div class="node node-email" style="top: 1380px; left: 990px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 14</div>
+    <div class="node-title">Cross-sell</div>
+  </div>
+  <div class="node node-email" style="top: 1380px; left: 1390px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 14</div>
+    <div class="node-title">Cross-sell</div>
+  </div>
+  <div class="content-box" style="top: 1380px; left: 1600px; width: 290px;">
+    <div class="heading">E3 contains (where appropriate) — primary converter</div>
+    <ul>
+      <li>Subject: "Here's what we recommend adding to your rotation"</li>
+      <li>Preview: "Three pieces that earn their spot..."</li>
+      <li>Elena founder intro block (quote-style with portrait)</li>
+      <li>Cross-sell product grid — direct-to-wear only (no accessories)</li>
+      <li>1 UGC quote under each recommended product</li>
+      <li>Per-branch picks: Solace→Sloane/Élan/Solene · Solene→Odette/Cloud Modal/Ellis · Game Day→Cotton Skirt/Sloane/Ellis · Generic→2x2 bestsellers grid</li>
+    </ul>
+  </div>
+
+  <!-- DELAY 7d (first) -->
+  <div class="node node-delay" style="top: 1540px; left: 220px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1540px; left: 620px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1540px; left: 1020px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1540px; left: 1420px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+
+  <!-- E4 row (Day 21) -->
+  <div class="node node-email" style="top: 1680px; left: 190px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 21</div>
+    <div class="node-title">Free shipping</div>
+  </div>
+  <div class="node node-email" style="top: 1680px; left: 590px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 21</div>
+    <div class="node-title">Free shipping</div>
+  </div>
+  <div class="node node-email" style="top: 1680px; left: 990px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 21</div>
+    <div class="node-title">Free shipping</div>
+  </div>
+  <div class="node node-email" style="top: 1680px; left: 1390px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#581C87" stroke-width="1.8" style="width: 22px; height: 22px;"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+    <div class="node-label">Day 21</div>
+    <div class="node-title">Free shipping</div>
+  </div>
+  <div class="content-box" style="top: 1680px; left: 1600px; width: 290px;">
+    <div class="heading">E4 contains (where appropriate) — habit builder</div>
+    <ul>
+      <li>Subject: "You've just unlocked free shipping on your next order"</li>
+      <li>Hero image with <code>FREESHIP-FIRST</code> code overlay</li>
+      <li>UGC anchor quote at top</li>
+      <li>Plain team voice intro (not Elena)</li>
+      <li>Dynamic new arrivals 2x2 grid (Shopify New Arrivals feed)</li>
+      <li>Community block: Follow @lohnr_us + Join Lohnr Facebook Group</li>
+      <li>Free shipping: no min spend, 30-day rolling expiry</li>
+    </ul>
+  </div>
+
+  <!-- DELAY 7d (second) -->
+  <div class="node node-delay" style="top: 1840px; left: 220px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1840px; left: 620px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1840px; left: 1020px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+  <div class="node node-delay" style="top: 1840px; left: 1420px; width: 100px; height: 80px;">
+    <div class="node-label">Delay</div>
+    <div class="node-title">7 days</div>
+  </div>
+
+  <!-- E5 row (Day 28) — PLAIN TEXT -->
+  <div class="node node-email-plain" style="top: 1980px; left: 190px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#78350F" stroke-width="1.8" style="width: 22px; height: 22px;"><path d="M4 4h16v16H4z"/><path d="M4 8h16M8 4v16"/></svg>
+    <div class="node-label">Day 28</div>
+    <div class="node-title">Gabby's check-in</div>
+  </div>
+  <div class="node node-email-plain" style="top: 1980px; left: 590px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#78350F" stroke-width="1.8" style="width: 22px; height: 22px;"><path d="M4 4h16v16H4z"/><path d="M4 8h16M8 4v16"/></svg>
+    <div class="node-label">Day 28</div>
+    <div class="node-title">Gabby's check-in</div>
+  </div>
+  <div class="node node-email-plain" style="top: 1980px; left: 990px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#78350F" stroke-width="1.8" style="width: 22px; height: 22px;"><path d="M4 4h16v16H4z"/><path d="M4 8h16M8 4v16"/></svg>
+    <div class="node-label">Day 28</div>
+    <div class="node-title">Gabby's check-in</div>
+  </div>
+  <div class="node node-email-plain" style="top: 1980px; left: 1390px; width: 160px; height: 100px;">
+    <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="#78350F" stroke-width="1.8" style="width: 22px; height: 22px;"><path d="M4 4h16v16H4z"/><path d="M4 8h16M8 4v16"/></svg>
+    <div class="node-label">Day 28</div>
+    <div class="node-title">Gabby's check-in</div>
+  </div>
+  <div class="content-box" style="top: 1980px; left: 1600px; width: 290px;">
+    <div class="heading">E5 contains — plain text 1:1</div>
+    <ul>
+      <li>Subject: "How is your {product} treating you?"</li>
+      <li>Preview: "Just checking in..."</li>
+      <li>Sender: Gabby (Customer Experience)</li>
+      <li>Format: plain-text only (no hero, no grid, no banner)</li>
+      <li>Feedback ask: wear count, styling, compliments</li>
+      <li>Reply invitation (read everything)</li>
+      <li>Soft review ask</li>
+      <li>Reply-to: <code>gabby@lohnr.com</code></li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<!-- IMPLEMENTATION NOTES -->
+<div class="impl-notes">
+  <div class="heading">📋 Klaviyo setup checklist for implementation</div>
+  <ul>
+    <li><strong>Smart sending:</strong> ON (Klaviyo default quiet-hours / recent-send suppression)</li>
+    <li><strong>Initial delay:</strong> 45 minutes before Email 1 (so customers have time to settle after checkout — cancel filter not relied upon here)</li>
+    <li><strong>No profile filters or exclusions set</strong> — flow fires on every Placed Order event. Standard Klaviyo suppressions (unsubscribed, bounce, spam) apply globally.</li>
+    <li><strong>Entry conditional split:</strong> Evaluate branches in priority order — first match wins. Use the <code>Items</code> property from the Placed Order event (array of product name strings).</li>
+    <li><strong>E1 founder image:</strong> Upload Elena's portrait to Klaviyo image library before launch</li>
+    <li><strong>E1 Track Your Order CTA:</strong> Link to Shopify order status URL (Klaviyo has a dedicated merge tag for this)</li>
+    <li><strong>E1 Generic dynamic product block:</strong> Requires Klaviyo Shopify catalog feed to be synced. Matches by product name from <code>event.Items</code>.</li>
+    <li><strong>E2 Generic subject + body:</strong> Use <code>{{ event.Items|first|default:"first Lohnr piece" }}</code> with fallback</li>
+    <li><strong>E4 free shipping code:</strong> Create <code>FREESHIP-FIRST</code> in Shopify — no minimum spend, static code, 30-day rolling expiry</li>
+    <li><strong>E4 new arrivals block:</strong> Connect Shopify "New Arrivals" collection feed to Klaviyo, use a dynamic product block</li>
+    <li><strong>E4 Facebook Group URL:</strong> [RO team to provide current Lohnr FB Group URL]</li>
+    <li><strong>E5 plain-text rendering:</strong> Use Klaviyo's plain-text template — no hero, no logo, no styled footer. Standard unsubscribe block only.</li>
+    <li><strong>E5 sender reply-to:</strong> Set to <code>gabby@lohnr.com</code> (or equivalent) so replies route to CX</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div>
+    <strong>Flow copy:</strong> Lohnr Campaigns sheet · <code>Flows Copy</code> tab · cols M–AF · 
+    <strong>Planning:</strong> <code>Flows Planning</code> tab · row 25
+  </div>
+  <div>Built 2026-04-18 · Lohnr · F_FIRST-TIME-BUYER</div>
+</div>
+
+</body>
+</html>
